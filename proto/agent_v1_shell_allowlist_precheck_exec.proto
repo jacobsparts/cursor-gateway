@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package agent.v1;
+
+import "agent_v1_shell_exec.proto";
+
+
+message ShellAllowlistPrecheckArgs {
+  string command = 1;
+  string working_directory = 2;
+  .agent.v1.ShellCommandParsingResult parsing_result = 3;
+  optional .agent.v1.CommandClassifierResult classifier_result = 4;
+  optional string tool_call_id = 5;
+}
+
+message ShellAllowlistPrecheckResult {
+  bool allowlisted = 1;
+}

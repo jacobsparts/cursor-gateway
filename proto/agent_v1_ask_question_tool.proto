@@ -1,0 +1,58 @@
+syntax = "proto3";
+
+package agent.v1;
+
+
+message AskQuestionArgs {
+  string title = 1;
+  repeated .agent.v1.AskQuestionArgs.Question questions = 2;
+  bool run_async = 5;
+  string async_original_tool_call_id = 6;
+
+  message Option {
+    string id = 1;
+    string label = 2;
+  }
+
+  message Question {
+    string id = 1;
+    string prompt = 2;
+    repeated .agent.v1.AskQuestionArgs.Option options = 3;
+    bool allow_multiple = 4;
+  }
+}
+
+message AskQuestionAsync {
+}
+
+message AskQuestionError {
+  string error_message = 1;
+}
+
+message AskQuestionRejected {
+  string reason = 1;
+}
+
+message AskQuestionResult {
+  oneof result {
+    .agent.v1.AskQuestionSuccess success = 1;
+    .agent.v1.AskQuestionError error = 2;
+    .agent.v1.AskQuestionRejected rejected = 3;
+    .agent.v1.AskQuestionAsync async = 4;
+  }
+}
+
+message AskQuestionSuccess {
+  repeated .agent.v1.AskQuestionSuccess.Answer answers = 1;
+
+  message Answer {
+    string question_id = 1;
+    repeated string selected_option_ids = 2;
+    string freeform_text = 3;
+  }
+}
+
+message AskQuestionToolCall {
+  .agent.v1.AskQuestionArgs args = 1;
+  .agent.v1.AskQuestionResult result = 2;
+}

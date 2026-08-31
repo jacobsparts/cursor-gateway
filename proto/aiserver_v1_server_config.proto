@@ -1,0 +1,856 @@
+syntax = "proto3";
+
+package aiserver.v1;
+
+import "aiserver_v1_aiserver.proto";
+import "aiserver_v1_bugbot.proto";
+import "aiserver_v1_utils.proto";
+import "google_protobuf_timestamp.proto";
+
+
+message AdButton {
+  string text = 1;
+  .aiserver.v1.ButtonType button_type = 2;
+  oneof action {
+    string external_url = 3;
+    string command_id = 4;
+    .aiserver.v1.ClientAction client_action = 5;
+  }
+}
+
+message AdContent {
+  optional string tag = 1;
+  string title = 2;
+  repeated .aiserver.v1.AdSection sections = 3;
+  optional bool center_title = 4;
+}
+
+message AdHeader {
+  optional string banner_url = 1;
+  optional string banner_url_light = 2;
+  optional string banner_url_dark = 3;
+}
+
+message AdSection {
+  string icon_svg = 1;
+  string title = 2;
+  string description = 3;
+  optional bool is_beta = 4;
+}
+
+message AgentLayoutPolicy {
+  repeated string allowed_action_ids = 1;
+  repeated string denied_action_ids = 2;
+}
+
+message AgentTelemetryConfig {
+  bool enabled = 1;
+}
+
+message AgentUrlConfig {
+  string agent_url = 1;
+  string agentn_url = 2;
+}
+
+message AutoContextConfig {
+  bool enabled = 1;
+  bool enabled_fallback = 2;
+  bool enabled_git_graph = 3;
+  bool enabled_sem_search = 4;
+  bool enabled_v2 = 5;
+}
+
+message BackgroundComposerConfig {
+  bool enable_background_agent = 1;
+  bool show_background_agent_in_beta_settings = 2;
+  optional int32 window_in_window_preload_count = 3;
+  optional double window_in_window_ping_interval_ms = 4;
+  optional bool show_background_agent_disclaimer = 5;
+  optional bool show_background_agent_slack_ad = 6;
+  bool show_background_agent_history_action = 7;
+  optional int32 max_window_in_windows = 8;
+  bool use_modal_experience = 9;
+}
+
+message BugConfigRequest {
+  bool telem_enabled = 1;
+  repeated double bug_bot_dismissed_notification_last_10_times_unix_ms = 2;
+  repeated double bug_bot_viewed_notification_last_10_times_unix_ms = 3;
+}
+
+message BugConfigResponse {
+  .aiserver.v1.BugConfigResponse.LinterStrategyV1 linter_strategy_v1 = 1;
+  .aiserver.v1.BugConfigResponse.BugBotV1 bug_bot_v1 = 2;
+  .aiserver.v1.BugConfigResponse.LinterStrategyV2 linter_strategy_v2 = 3;
+
+  message BugBotV1 {
+    bool enabled = 1;
+    bool is_subsidized = 2;
+    int32 background_call_frequency_ms = 3;
+    bool kill_switch = 4;
+    double show_intrusive_notification_only_if_last_time_was_more_than_ms_ago = 5;
+    optional int32 background_diff_absolute_max_tokens = 6;
+    optional int32 background_diff_min_min_token_threshold = 7;
+    optional int32 background_diff_min_max_token_threshold = 8;
+    optional double background_diff_last_commit_less_than_this_many_ms_ago = 9;
+    optional int32 background_unified_context_lines = 15;
+    optional bool background_diff_include_uncommitted = 16;
+    optional int32 default_diff_context_lines = 10;
+    optional int32 diff_absolute_max_tokens = 11;
+    optional int32 custom_instructions_max_char_length = 12;
+    optional int32 default_fallback_iterations = 13;
+    optional int32 threshold_for_expensive_run_modal_cents = 14;
+    optional string cheap_model_name = 17;
+    optional int32 cheap_absolute_max_tokens = 18;
+    optional int32 expensive_absolute_max_tokens = 19;
+  }
+
+  message LinterStrategyV1 {
+    bool enabled = 1;
+    bool try_trigger_on_save = 2;
+    double wait_between_triggers_ms = 3;
+  }
+
+  message LinterStrategyV2 {
+    bool enabled = 1;
+    double wait_between_triggers_ms = 2;
+    double debounce_triggers_ms = 3;
+    int32 keep_lines_around_chunk = 4;
+    int32 prevent_triggering_for_files_with_this_many_lines = 5;
+    bool prevent_triggering_when_lints = 6;
+  }
+}
+
+message BugbotConfig {
+  bool bugbot_plan_enabled = 1;
+  .aiserver.v1.BugbotPlanType bugbot_plan_type = 2;
+}
+
+enum BugbotPlanType {
+  BUGBOT_PLAN_TYPE_UNSPECIFIED = 0;
+  BUGBOT_PLAN_TYPE_TEAM = 1;
+  BUGBOT_PLAN_TYPE_USER = 2;
+}
+
+enum ButtonType {
+  BUTTON_TYPE_UNSPECIFIED = 0;
+  BUTTON_TYPE_LEADING = 1;
+  BUTTON_TYPE_PRIMARY = 2;
+  BUTTON_TYPE_SECONDARY = 3;
+}
+
+message ChatConfig {
+  bool disable_unification = 1;
+  int32 full_context_token_limit = 2;
+  bool disable_yolo_mode = 3;
+  int32 max_rule_length = 4;
+  int32 max_mcp_tools = 5;
+  int32 warn_mcp_tools = 6;
+  string summarization_message = 7;
+  int32 num_files_for_memory_generation = 8;
+  bool memory_default_enabled = 9;
+  int32 num_summarizations_before_warning_shown = 10;
+  bool cursor_rules_read_file_fix_enabled = 11;
+  bool dont_send_ctrl_c_before_command = 12;
+  int32 client_statsig_poll_interval_ms = 13;
+  bool disable_statsig = 14;
+  repeated string list_dir_v2_predefined_ignore_globs = 15;
+}
+
+message ChunkDiff {
+  string diff_string = 1;
+  int32 old_start = 2;
+  int32 new_start = 3;
+  int32 old_lines = 4;
+  int32 new_lines = 5;
+}
+
+enum ClientSurface {
+  CLIENT_SURFACE_UNSPECIFIED = 0;
+  CLIENT_SURFACE_EDITOR = 1;
+  CLIENT_SURFACE_GLASS = 2;
+}
+
+message ClientTracingConfig {
+  double global_sample_rate = 1;
+  double traces_sample_rate = 2;
+  double logger_sample_rate = 3;
+  double minidump_sample_rate = 4;
+  double error_rate_limit = 5;
+  double performance_unit_rate_limit = 6;
+  double profiles_sample_rate = 7;
+  double json_stringify_sample_rate = 8;
+}
+
+enum ClientUpdateLevel {
+  CLIENT_UPDATE_LEVEL_UNSPECIFIED = 0;
+  CLIENT_UPDATE_LEVEL_NONE = 1;
+  CLIENT_UPDATE_LEVEL_RECOMMENDED = 2;
+  CLIENT_UPDATE_LEVEL_REQUIRED = 3;
+}
+
+message ClientVersionStatus {
+  .aiserver.v1.ClientUpdateLevel update_level = 1;
+  string current_client_version = 2;
+  string min_supported_client_version = 3;
+  string min_allowed_client_version = 4;
+  optional string message = 5;
+}
+
+enum CodeTourDoneReason {
+  CODE_TOUR_DONE_REASON_UNSPECIFIED = 0;
+  CODE_TOUR_DONE_REASON_OK = 1;
+  CODE_TOUR_DONE_REASON_INVALID_REQUEST = 2;
+  CODE_TOUR_DONE_REASON_DIFF_TOO_LONG = 3;
+  CODE_TOUR_DONE_REASON_ERROR = 4;
+  CODE_TOUR_DONE_REASON_CANCELLED = 5;
+}
+
+message CodebaseTelemetryConfig {
+  bool enabled = 1;
+  string reset_token = 2;
+}
+
+message CommitMetrics {
+  string commit_hash = 1;
+  int32 total_lines_added = 2;
+  int32 total_lines_deleted = 3;
+  int32 tab_lines_added = 4;
+  int32 tab_lines_deleted = 5;
+  int32 agent_lines_added = 6;
+  int32 agent_lines_deleted = 7;
+  int32 non_ai_lines_added = 8;
+  int32 non_ai_lines_deleted = 9;
+  optional string branch_name = 10;
+  optional bool is_primary_branch = 11;
+  string repo_name = 12;
+  optional string message = 13;
+  optional .google.protobuf.Timestamp commit_timestamp = 14;
+  string user_email = 16;
+  repeated .aiserver.v1.FileRangeAnnotations range_annotations = 19;
+  optional string commit_source = 20;
+}
+
+message ConversationMcp {
+  string tool_name = 1;
+  optional string mcp_server_name = 2;
+  optional int32 call_count = 3;
+  optional .google.protobuf.Timestamp last_called_at = 4;
+  optional string plugin = 5;
+  optional string marketplace = 6;
+}
+
+message ConversationPlan {
+  optional string title = 1;
+  optional int32 todo_count = 2;
+  optional string plan_file_uri = 3;
+  optional .google.protobuf.Timestamp updated_at = 4;
+  optional string content = 5;
+}
+
+message ConversationReference {
+  string id = 1;
+  optional string title = 2;
+  optional string tldr = 3;
+  optional string overview = 4;
+  repeated string summary_bullets = 5;
+  repeated string models = 6;
+  repeated .aiserver.v1.ConversationPlan plans = 7;
+  optional string author_email = 8;
+  repeated .aiserver.v1.ConversationSkill skills = 9;
+  repeated .aiserver.v1.ConversationMcp mcps = 10;
+  optional string initial_prompt = 11;
+}
+
+message ConversationSkill {
+  string skill_id = 1;
+  optional string platform = 2;
+  optional string skill_source = 3;
+  optional string entrypoint = 4;
+  optional string model_name = 5;
+  optional int32 usage_count = 6;
+  optional .google.protobuf.Timestamp last_applied_at = 7;
+  optional string plugin = 8;
+  optional string marketplace = 9;
+}
+
+message ConversationSummarizationPromptOptions {
+  optional string inline_system_prompt = 1;
+  optional string summarization_model = 2;
+  optional string prompt_config_id = 3;
+}
+
+message CpuProfileConfig {
+  int32 interval = 1;
+}
+
+message DevEnvironment {
+  bool has_alternative_cli = 1;
+  bool has_cursor_agent_cli = 2;
+}
+
+enum DisplayMode {
+  DISPLAY_MODE_UNSPECIFIED = 0;
+  DISPLAY_MODE_TOAST = 1;
+  DISPLAY_MODE_MODAL = 2;
+}
+
+message FolderSizeLimit {
+  int32 max_total_bytes = 1;
+  int32 max_num_files = 2;
+}
+
+message GetCommitMetricsByFilePathRequest {
+  string file_path = 1;
+  optional int32 start_line = 2;
+  optional int32 end_line = 3;
+  optional string commit_hash = 4;
+  optional int32 limit = 5;
+  optional string branch = 6;
+  optional string user_email = 7;
+  optional bool include_plans = 9;
+  optional bool include_skills = 10;
+  optional bool include_mcps = 11;
+  optional .aiserver.v1.ConversationSummarizationPromptOptions summarization_prompt_options = 12;
+  optional int32 team_id = 13;
+}
+
+message GetCommitMetricsRequest {
+  repeated string commit_hashes = 1;
+  optional string branch = 2;
+  bool on_demand_summaries = 3;
+  optional bool include_plans = 5;
+  optional bool include_skills = 6;
+  optional bool include_mcps = 7;
+  optional .aiserver.v1.ConversationSummarizationPromptOptions summarization_prompt_options = 12;
+  optional int32 team_id = 13;
+}
+
+message GetCommitMetricsResponse {
+  repeated .aiserver.v1.CommitMetrics commits = 1;
+  repeated .aiserver.v1.ConversationReference conversations = 2;
+}
+
+message GetServerConfigRequest {
+  bool telem_enabled = 1;
+  repeated double bug_bot_dismissed_notification_last_10_times_unix_ms = 2;
+  repeated double bug_bot_viewed_notification_last_10_times_unix_ms = 3;
+  .aiserver.v1.VscodeOSStatistics os_stats = 4;
+  .aiserver.v1.VscodeOSProperties os_properties = 5;
+  .aiserver.v1.RemoteAuthority remote_authority = 6;
+  .aiserver.v1.InAppAdTrigger in_app_ad_trigger = 7;
+  .aiserver.v1.DevEnvironment dev_environment = 8;
+  .aiserver.v1.ClientSurface client_surface = 9;
+  .aiserver.v1.ScmConnectAdContext scm_connect_ad_context = 10;
+}
+
+message GetServerConfigResponse {
+  .aiserver.v1.BugConfigResponse bug_config_response = 1;
+  bool is_dev_do_not_use_for_secret_things_because_can_be_spoofed_by_users = 2;
+  .aiserver.v1.IndexingConfig indexing_config = 3;
+  .aiserver.v1.ClientTracingConfig client_tracing_config = 4;
+  .aiserver.v1.ChatConfig chat_config = 5;
+  string config_version = 6;
+  .aiserver.v1.Http2Config http2_config = 7;
+  .aiserver.v1.ProfilingConfig profiling_config = 8;
+  .aiserver.v1.MetricsConfig metrics_config = 9;
+  .aiserver.v1.BackgroundComposerConfig background_composer_config = 10;
+  .aiserver.v1.AutoContextConfig auto_context_config = 11;
+  repeated .aiserver.v1.ModelMigration model_migrations = 12;
+  .aiserver.v1.MemoryMonitorConfig memory_monitor_config = 13;
+  .aiserver.v1.FolderSizeLimit folder_size_limit = 14;
+  .aiserver.v1.OnlineMetricsConfig online_metrics_config = 20;
+  .aiserver.v1.GitIndexingConfig git_indexing_config = 15;
+  .aiserver.v1.PerformanceEventsConfig performance_events_config = 16;
+  optional .aiserver.v1.InAppAd current_in_app_ad = 17;
+  .aiserver.v1.TraceConfig trace_config = 18;
+  optional .aiserver.v1.RunTerminalServerConfig run_terminal_server_config = 19;
+  .aiserver.v1.InteractionConfig interaction_config = 21;
+  .aiserver.v1.AgentTelemetryConfig agent_telemetry_config = 22;
+  optional .aiserver.v1.ClientVersionStatus client_version_status = 23;
+  optional .aiserver.v1.UpdateConfig update_config = 24;
+  optional .aiserver.v1.AgentLayoutPolicy agent_layout_policy = 25;
+  bool use_nlb_for_nal = 26;
+  .aiserver.v1.AgentUrlConfig agent_url_config = 27;
+  optional bool cli_sandbox_default_enabled = 28;
+  optional .aiserver.v1.TerminalTipConfig terminal_tip_config = 30;
+  optional string model_picker_nudge = 31;
+  repeated .aiserver.v1.InferenceProviderWarning inference_provider_warnings = 32;
+  optional .aiserver.v1.OnboardingConfig onboarding_config = 33;
+  optional .aiserver.v1.BugbotConfig bugbot_config = 34;
+  optional .aiserver.v1.CodebaseTelemetryConfig codebase_telemetry_config = 35;
+  .aiserver.v1.RetrievalKeepAliveConfig retrieval_keep_alive_config = 36;
+  optional .aiserver.v1.GoogleWorkspaceMcpOAuthClient google_workspace_mcp_oauth_client = 37;
+}
+
+message GitIndexingConfig {
+  optional bool enabled = 1;
+  optional int32 max_pr_count = 2;
+  optional int32 max_pr_size = 3;
+  optional int32 pr_embedding_context = 4;
+  optional int32 js_concurrency = 5;
+  optional int32 js_chunk_size = 6;
+  optional int32 cpu_concurrency = 7;
+  optional int32 indexing_period_seconds = 8;
+  optional int32 max_attempts_per_pr = 9;
+  optional bool allow_index_copy_from_server = 10;
+}
+
+message GoogleWorkspaceMcpOAuthClient {
+  string client_id = 1;
+  string client_secret = 2;
+}
+
+message HeapProfileConfig {
+  int32 sampling_interval = 1;
+  optional bool include_objects_collected_by_major_gc = 2;
+  optional bool include_objects_collected_by_minor_gc = 3;
+}
+
+enum Http2Config {
+  HTTP2_CONFIG_UNSPECIFIED = 0;
+  HTTP2_CONFIG_FORCE_ALL_DISABLED = 1;
+  HTTP2_CONFIG_FORCE_ALL_ENABLED = 2;
+  HTTP2_CONFIG_FORCE_BIDI_DISABLED = 3;
+  HTTP2_CONFIG_FORCE_BIDI_ENABLED = 4;
+}
+
+message InAppAd {
+  string id = 1;
+  .aiserver.v1.AdHeader header = 2;
+  .aiserver.v1.AdContent content = 3;
+  repeated .aiserver.v1.AdButton buttons = 4;
+  optional bool force_dark_close_button = 5;
+  .aiserver.v1.DisplayMode display_mode = 6;
+  optional string analytics_variant = 7;
+  optional .aiserver.v1.ModalDisplayConfig modal_display_config = 8;
+  repeated .aiserver.v1.ClientSurface target_surfaces = 9;
+}
+
+enum InAppAdTrigger {
+  IN_APP_AD_TRIGGER_UNSPECIFIED = 0;
+  IN_APP_AD_TRIGGER_MOUNT = 1;
+  IN_APP_AD_TRIGGER_FIND_ISSUES = 2;
+  IN_APP_AD_TRIGGER_GIT_PUSH = 3;
+  IN_APP_AD_TRIGGER_COMMIT = 4;
+  IN_APP_AD_TRIGGER_IOS_DOWNLOAD_MENU = 5;
+}
+
+message IndexingConfig {
+  int32 max_concurrent_uploads = 1;
+  int32 absolute_max_number_files = 2;
+  int32 max_file_retries = 3;
+  int32 sync_concurrency = 4;
+  int32 auto_indexing_max_num_files = 5;
+  int32 indexing_period_seconds = 6;
+  string repo42_auth_token = 7;
+  optional bool incremental = 8;
+  optional string default_user_path_encryption_key = 9;
+  optional string default_team_path_encryption_key = 10;
+  optional bool multi_root_indexing_enabled = 11;
+  double copy_status_check_period_seconds = 12;
+  int32 copy_timeout_seconds = 13;
+  int32 max_batch_bytes = 14;
+  int32 max_batch_num_requests = 15;
+  int32 max_sync_merkle_batch_size = 16;
+}
+
+message InferenceProviderWarning {
+  string message = 1;
+  repeated string affected_models = 2;
+  optional string fallback_model = 3;
+  .aiserver.v1.InferenceProviderWarningTrigger trigger = 4;
+}
+
+enum InferenceProviderWarningTrigger {
+  INFERENCE_PROVIDER_WARNING_TRIGGER_UNSPECIFIED = 0;
+  INFERENCE_PROVIDER_WARNING_TRIGGER_ON_SELECT = 1;
+  INFERENCE_PROVIDER_WARNING_TRIGGER_ON_ERROR = 2;
+}
+
+message InteractionConfig {
+  bool profiling_enabled = 1;
+  bool metrics_enabled = 2;
+  optional int32 profiling_interval_sec = 3;
+  optional int32 metrics_interval_sec = 4;
+  optional int32 profiling_max_buffer_size = 5;
+  optional int32 profiling_interaction_duration_threshold_ms = 6;
+  optional int32 profiling_sample_interval_ms = 7;
+  optional int32 metrics_min_interactions_for_loaf = 8;
+  optional int32 metrics_min_foreground_time_ms = 9;
+  optional int32 metrics_combined_inp_drop_highest_count = 10;
+  optional int32 metrics_click_inp_drop_highest_count = 11;
+  optional int32 metrics_keypress_inp_drop_highest_count = 12;
+  optional int32 metrics_startup_threshold_sec = 13;
+  optional int32 analytics_summary_every_n_windows = 14;
+  optional int32 ext_host_lag_summary_interval_sec = 15;
+}
+
+message MemoryMonitorConfig {
+  bool enabled = 1;
+  bool show_status_entry = 2;
+  optional int32 base_threshold_mb = 3;
+  optional int32 critical_offset_mb = 4;
+  optional int32 process_memory_interval_sec = 5;
+}
+
+message MetricsConfig {
+  bool enabled_in_privacy_mode = 2;
+  bool enabled_in_non_privacy_mode = 3;
+}
+
+message ModalDisplayConfig {
+  optional string background_gradient = 1;
+  optional string description = 2;
+  optional string background_gradient_light = 3;
+  optional string background_gradient_dark = 4;
+}
+
+message ModelMigration {
+}
+
+message OnboardingConfig {
+  repeated string marketplace_plugin_names = 1;
+  bool agentic_onboarding_enabled = 2;
+}
+
+message OnlineMetricsConfig {
+  bool enabled = 1;
+  int32 max_requests_tracked = 2;
+  int32 max_requests_tracked_mb = 3;
+  double max_request_retention_seconds = 4;
+  bool send_original_file_contents_for_initial_snapshot = 5;
+  bool send_full_added_lines_in_diff_changes = 6;
+  int32 num_commits_tracked = 7;
+  repeated int32 time_intervals_tracked_minutes = 8;
+  int32 too_big_file_size_bytes = 9;
+}
+
+message PerformanceEventsConfig {
+  bool enabled = 1;
+  optional int32 buffer_size = 2;
+  optional int32 flush_interval_ms = 3;
+}
+
+message ProfileConfig {
+  string id = 1;
+  optional .aiserver.v1.HeapProfileConfig heap = 2;
+  optional .aiserver.v1.CpuProfileConfig cpu = 3;
+}
+
+message ProfileScheduleConfig {
+  string id = 1;
+  string process = 2;
+  string config_id = 3;
+  .aiserver.v1.ProfileScheduleConfig.ScheduleConfig schedule = 4;
+  int32 activity_timeout = 5;
+
+  message ScheduleConfig {
+    int32 interval = 1;
+    int32 duration = 2;
+  }
+}
+
+message ProfilingConfig {
+  bool enabled = 1;
+  repeated .aiserver.v1.ProfileConfig configs = 2;
+  repeated .aiserver.v1.ProfileScheduleConfig schedules = 3;
+}
+
+message RemoteAuthority {
+  .aiserver.v1.RemoteConnectionType connection_type = 1;
+}
+
+enum RemoteConnectionType {
+  REMOTE_CONNECTION_TYPE_UNSPECIFIED = 0;
+  REMOTE_CONNECTION_TYPE_LOCAL = 1;
+  REMOTE_CONNECTION_TYPE_WSL = 2;
+  REMOTE_CONNECTION_TYPE_SSH = 3;
+  REMOTE_CONNECTION_TYPE_DEVCONTAINER = 4;
+  REMOTE_CONNECTION_TYPE_DEVCONTAINER_SSH = 5;
+  REMOTE_CONNECTION_TYPE_DEVCONTAINER_WSL = 6;
+}
+
+message ReportAgentSnapshotRequest {
+  string agent_request_id = 1;
+  repeated .aiserver.v1.RequestTrackingFileSnapshot initial_file_snapshots = 2;
+  repeated .aiserver.v1.RequestTrackingFileSnapshot file_snapshots = 3;
+  repeated string too_big_files = 4;
+  string name = 11;
+  double snapshot_date_unix_milliseconds = 10;
+}
+
+message ReportAgentSnapshotResponse {
+}
+
+message RequestTrackingFileGitInfo {
+  oneof info {
+    .aiserver.v1.RequestTrackingFileGitInfo.GitInfo git_info = 1;
+    bool no_repo_found = 2;
+  }
+
+  message GitInfo {
+    string git_root = 1;
+    string branch = 2;
+    string commit_hash = 3;
+  }
+}
+
+message RequestTrackingFileSnapshot {
+  string fs_path = 1;
+  string file_uuid = 2;
+  double file_size_bytes = 3;
+  int32 num_lines = 4;
+  .aiserver.v1.RequestTrackingFileSnapshot.Kind kind = 9;
+  bool diff_timed_out = 5;
+  .aiserver.v1.RequestTrackingFileGitInfo git_info = 8;
+  repeated .aiserver.v1.RequestTrackingFileSnapshot.DiffChange diff_changes = 6;
+  optional string original_file_contents = 7;
+
+  message DiffChange {
+    int32 original_start_line_number_one_indexed = 1;
+    int32 original_end_line_number_exclusive_one_indexed = 2;
+    int32 modified_start_line_number_one_indexed = 3;
+    int32 modified_end_line_number_exclusive_one_indexed = 4;
+    repeated int32 tokenized_added_lines = 6;
+    repeated string added_lines = 5;
+  }
+
+  enum Kind {
+    KIND_UNSPECIFIED = 0;
+    KIND_ADDED = 1;
+    KIND_DELETED = 2;
+    KIND_MODIFIED = 3;
+  }
+}
+
+enum RetrievalKeepAliveConfig {
+  RETRIEVAL_KEEP_ALIVE_CONFIG_UNSPECIFIED = 0;
+  RETRIEVAL_KEEP_ALIVE_CONFIG_FORCE_DISABLED = 1;
+  RETRIEVAL_KEEP_ALIVE_CONFIG_FORCE_ENABLED = 2;
+}
+
+message ReviewBugV2 {
+  string id = 1;
+  string chunk_id = 2;
+  string relative_workspace_path = 3;
+  int32 start_line = 4;
+  int32 end_line = 5;
+  string description = 6;
+  int32 severity = 7;
+  string tldr = 8;
+  string diff = 9;
+  int32 full_chunk_start_line = 10;
+  int32 full_chunk_end_line = 11;
+  int32 full_chunk_total_lines = 12;
+}
+
+message ReviewChatRequestV2 {
+  .aiserver.v1.File file = 1;
+  .aiserver.v1.ReviewBugV2 bug = 2;
+  optional string linter_rules = 3;
+  repeated .aiserver.v1.ReviewChatMessage messages = 4;
+}
+
+message ReviewChatResponseV2 {
+  string text = 1;
+}
+
+message ReviewRequestV2 {
+  repeated .aiserver.v1.ReviewRequestV2.FileDiff file_diffs = 1;
+  optional string linter_rules = 2;
+  optional bool also_find_hard_bugs = 3;
+  optional string save_request_as = 4;
+
+  message FileDiff {
+    .aiserver.v1.File file = 1;
+    repeated .aiserver.v1.ChunkDiff chunk_diffs = 2;
+  }
+}
+
+message ReviewResponseV2 {
+  .aiserver.v1.ReviewBugV2 bug = 1;
+}
+
+message RunTerminalServerConfig {
+  repeated string composite_shell_commands = 1;
+  repeated string safe_shell_commands = 2;
+}
+
+enum ScmConnectAdConnectionState {
+  SCM_CONNECT_AD_CONNECTION_STATE_UNSPECIFIED = 0;
+  SCM_CONNECT_AD_CONNECTION_STATE_UNKNOWN = 1;
+  SCM_CONNECT_AD_CONNECTION_STATE_NOT_CONNECTED = 2;
+  SCM_CONNECT_AD_CONNECTION_STATE_HAS_ACCESS = 3;
+}
+
+message ScmConnectAdContext {
+  .aiserver.v1.ScmConnectAdProvider provider = 1;
+  string remote_url = 2;
+  .aiserver.v1.ScmConnectAdConnectionState connection_state = 3;
+}
+
+enum ScmConnectAdProvider {
+  SCM_CONNECT_AD_PROVIDER_UNSPECIFIED = 0;
+  SCM_CONNECT_AD_PROVIDER_GITHUB = 1;
+  SCM_CONNECT_AD_PROVIDER_GITLAB = 2;
+}
+
+message StoredRequestTrackingMetadata {
+  string agent_request_id = 1;
+  repeated .aiserver.v1.StoredRequestTrackingMetadata.File request_files = 2;
+  repeated .aiserver.v1.RequestTrackingFileGitInfo deduplicated_git_infos = 3;
+  int32 num_commits_tracked = 4;
+  double start_tracking_date_unix_milliseconds = 5;
+  double file_size_bytes = 6;
+  string workspace_id = 7;
+
+  message File {
+    string fs_path = 1;
+    string file_uuid = 2;
+    .aiserver.v1.RequestTrackingFileGitInfo git_info = 3;
+    bool too_big = 4;
+  }
+}
+
+message StreamBugBotLinterRequest {
+  .aiserver.v1.GitDiff git_diff = 1;
+  string active_file = 2;
+  int32 cursor_line_number_one_indexed = 3;
+  optional string session_id = 4;
+  bool telem_enabled = 5;
+}
+
+message StreamBugBotLinterResponse {
+  repeated .aiserver.v1.BugReport bugs = 1;
+}
+
+message StreamBugFindingRequest {
+  repeated .aiserver.v1.StreamBugFindingRequest.FileDiff file_diffs = 1;
+
+  message FileDiff {
+    string relative_workspace_path = 1;
+    repeated .aiserver.v1.StreamBugFindingRequest.FileDiff.Line lines = 2;
+    repeated .aiserver.v1.StreamBugFindingRequest.FileDiff.Hunk hunks = 3;
+    optional string old_relative_workspace_path = 4;
+    bool not_truncated = 5;
+
+    message Hunk {
+      int32 old_start_one_indexed = 1;
+      int32 new_start_one_indexed = 2;
+      repeated string old_lines = 3;
+      repeated string new_lines = 4;
+    }
+
+    message Line {
+      int32 one_indexed_line_number = 1;
+      string line = 2;
+    }
+  }
+}
+
+message StreamBugFindingResponse {
+  repeated .aiserver.v1.StreamBugFindingResponse.Bug bugs = 1;
+
+  message Bug {
+    string relative_workspace_path = 1;
+    int32 start_line = 2;
+    int32 end_line_inclusive = 3;
+    repeated string code_lines = 4;
+    double severity = 5;
+    double confidence = 6;
+    string description = 7;
+  }
+}
+
+message StreamCodeTourRequest {
+
+  enum PromptConstructionMode {
+    PROMPT_CONSTRUCTION_MODE_UNSPECIFIED = 0;
+    PROMPT_CONSTRUCTION_MODE_SERVER_COMPACT = 1;
+    PROMPT_CONSTRUCTION_MODE_CLIENT_RAW = 2;
+  }
+
+  message PullRequestReference {
+    string provider = 1;
+    string owner = 2;
+    string repository = 3;
+    int64 pull_request_number = 4;
+    optional string title = 5;
+    optional string body = 6;
+    optional string base_branch = 7;
+    optional string base_sha = 8;
+    optional string head_sha = 9;
+  }
+}
+
+message StreamCodeTourResponse {
+  oneof event {
+    .aiserver.v1.StreamCodeTourResponse.StatusEvent status = 1;
+    .aiserver.v1.StreamCodeTourResponse.DoneEvent done = 2;
+    .aiserver.v1.StreamCodeTourResponse.ErrorEvent error = 3;
+    .aiserver.v1.StreamCodeTourResponse.MarkdownDeltaEvent markdown_delta = 7;
+    .aiserver.v1.StreamCodeTourResponse.ThinkingDeltaEvent thinking_delta = 8;
+  }
+  optional string request_id = 4;
+  optional string conversation_id = 5;
+  optional .aiserver.v1.StreamCodeTourResponse.Blame blame = 6;
+
+  message Blame {
+    repeated .aiserver.v1.CommitMetrics commits = 1;
+    repeated .aiserver.v1.ConversationReference conversations = 2;
+  }
+
+  message DoneEvent {
+    .aiserver.v1.CodeTourDoneReason reason = 1;
+  }
+
+  message ErrorEvent {
+    string message = 1;
+    .aiserver.v1.CodeTourDoneReason reason = 2;
+  }
+
+  message MarkdownDeltaEvent {
+    string markdown_delta = 1;
+  }
+
+  message StatusEvent {
+    .aiserver.v1.StreamCodeTourResponse.StatusEvent.Status status = 1;
+    optional string message = 2;
+
+    enum Status {
+      STATUS_UNSPECIFIED = 0;
+      STATUS_STARTED = 1;
+      STATUS_PROCESSING = 2;
+    }
+  }
+
+  message ThinkingDeltaEvent {
+    string thinking_delta = 1;
+  }
+}
+
+message TerminalTipConfig {
+  string message = 1;
+  bool enabled = 2;
+}
+
+message TraceConfig {
+  bool enabled = 1;
+  optional int32 buffer_size = 2;
+  optional int32 flush_interval_ms = 3;
+  optional double sample_rate = 4;
+  optional double internal_sample_rate = 5;
+  optional double internal_ext_host_sample_rate = 6;
+}
+
+message UpdateConfig {
+  string release_track = 1;
+  .aiserver.v1.UpdateConfig.UpdateMode mode = 2;
+  optional int32 applied_at = 3;
+
+  enum UpdateMode {
+    UPDATE_MODE_UNSPECIFIED = 0;
+    UPDATE_MODE_ONE_TIME = 1;
+  }
+}

@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package agent.v1;
+
+import "agent_v1_pi_common.proto";
+
+
+message PiFindExecArgs {
+  string pattern = 1;
+  optional string path = 2;
+  optional int32 limit = 3;
+}
+
+message PiFindExecError {
+  string error = 1;
+}
+
+message PiFindExecResult {
+  oneof result {
+    .agent.v1.PiFindExecSuccess success = 1;
+    .agent.v1.PiFindExecError error = 2;
+  }
+}
+
+message PiFindExecSuccess {
+  string output = 1;
+  optional .agent.v1.PiTruncation truncation = 2;
+  optional uint32 result_limit_reached = 3;
+}

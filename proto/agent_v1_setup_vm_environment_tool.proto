@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package agent.v1;
+
+
+message SetupVmEnvironmentArgs {
+  string install_command = 2;
+  string start_command = 3;
+  string dockerfile_contents = 4;
+}
+
+message SetupVmEnvironmentResult {
+  oneof result {
+    .agent.v1.SetupVmEnvironmentSuccess success = 1;
+  }
+}
+
+message SetupVmEnvironmentSuccess {
+}
+
+message SetupVmEnvironmentToolCall {
+  .agent.v1.SetupVmEnvironmentArgs args = 1;
+  .agent.v1.SetupVmEnvironmentResult result = 2;
+}

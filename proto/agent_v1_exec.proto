@@ -1,0 +1,211 @@
+syntax = "proto3";
+
+package agent.v1;
+
+import "agent_v1_adopt_tool.proto";
+import "agent_v1_agent.proto";
+import "agent_v1_agent_store_conflict_exec.proto";
+import "agent_v1_background_shell_exec.proto";
+import "agent_v1_canvas_diagnostics_exec.proto";
+import "agent_v1_computer_use_tool.proto";
+import "agent_v1_conversation_search_exec.proto";
+import "agent_v1_delete_exec.proto";
+import "agent_v1_diagnostics_exec.proto";
+import "agent_v1_fetch_exec.proto";
+import "agent_v1_grep_exec.proto";
+import "agent_v1_hook_additional_context.proto";
+import "agent_v1_ls_exec.proto";
+import "agent_v1_mcp_allowlist_precheck_exec.proto";
+import "agent_v1_mcp_exec.proto";
+import "agent_v1_pi_bash_exec.proto";
+import "agent_v1_pi_edit_exec.proto";
+import "agent_v1_pi_find_exec.proto";
+import "agent_v1_pi_grep_exec.proto";
+import "agent_v1_pi_ls_exec.proto";
+import "agent_v1_pi_read_exec.proto";
+import "agent_v1_pi_write_exec.proto";
+import "agent_v1_read_exec.proto";
+import "agent_v1_record_screen_exec.proto";
+import "agent_v1_request_context_exec.proto";
+import "agent_v1_shell_allowlist_precheck_exec.proto";
+import "agent_v1_shell_exec.proto";
+import "agent_v1_smart_mode_classifier_exec.proto";
+import "agent_v1_subagent_exec.proto";
+import "agent_v1_web_fetch_allowlist_precheck_exec.proto";
+import "agent_v1_write_exec.proto";
+import "aiserver_v1_utils.proto";
+
+
+message AbortArgs {
+}
+
+message AbortResult {
+}
+
+message ExecClientControlMessage {
+  oneof message {
+    .agent.v1.ExecClientStreamClose stream_close = 1;
+    .agent.v1.ExecClientThrow throw = 2;
+    .agent.v1.ExecClientHeartbeat heartbeat = 3;
+  }
+}
+
+message ExecClientHeartbeat {
+  uint32 id = 1;
+}
+
+message ExecClientMessage {
+  uint32 id = 1;
+  string exec_id = 15;
+  optional int32 local_execution_time_ms = 39;
+  repeated .agent.v1.HookAdditionalContext hook_additional_contexts = 45;
+  oneof message {
+    .agent.v1.ShellResult shell_result = 2;
+    .agent.v1.WriteResult write_result = 3;
+    .agent.v1.DeleteResult delete_result = 4;
+    .agent.v1.GrepResult grep_result = 5;
+    .agent.v1.ReadResult read_result = 7;
+    .agent.v1.ReadResult redacted_read_result = 29;
+    .agent.v1.LsResult ls_result = 8;
+    .agent.v1.DiagnosticsResult diagnostics_result = 9;
+    .agent.v1.RequestContextResult request_context_result = 10;
+    .agent.v1.McpResult mcp_result = 11;
+    .agent.v1.ShellStream shell_stream = 14;
+    .agent.v1.BackgroundShellSpawnResult background_shell_spawn_result = 16;
+    .agent.v1.ListMcpResourcesExecResult list_mcp_resources_exec_result = 17;
+    .agent.v1.ReadMcpResourceExecResult read_mcp_resource_exec_result = 18;
+    .agent.v1.McpStateExecResult mcp_state_exec_result = 36;
+    .agent.v1.FetchResult fetch_result = 20;
+    .agent.v1.RecordScreenResult record_screen_result = 21;
+    .agent.v1.ComputerUseResult computer_use_result = 22;
+    .agent.v1.WriteShellStdinResult write_shell_stdin_result = 23;
+    .agent.v1.ExecuteHookResult execute_hook_result = 27;
+    .agent.v1.SubagentResult subagent_result = 28;
+    .agent.v1.ForceBackgroundShellResult force_background_shell_result = 30;
+    .agent.v1.ForceBackgroundSubagentResult force_background_subagent_result = 31;
+    .agent.v1.SubagentAwaitResult subagent_await_result = 37;
+    .agent.v1.SmartModeClassifierResult smart_mode_classifier_result = 38;
+    .agent.v1.CanvasDiagnosticsResult canvas_diagnostics_result = 40;
+    .agent.v1.ShellAllowlistPrecheckResult shell_allowlist_precheck_result = 41;
+    .agent.v1.McpAllowlistPrecheckResult mcp_allowlist_precheck_result = 42;
+    .agent.v1.WebFetchAllowlistPrecheckResult web_fetch_allowlist_precheck_result = 43;
+    .aiserver.v1.GetDiffResponse git_diff_response = 44;
+    .agent.v1.PiReadExecResult pi_read_result = 46;
+    .agent.v1.PiBashExecResult pi_bash_result = 47;
+    .agent.v1.PiEditExecResult pi_edit_result = 48;
+    .agent.v1.PiWriteExecResult pi_write_result = 49;
+    .agent.v1.PiGrepExecResult pi_grep_result = 50;
+    .agent.v1.PiFindExecResult pi_find_result = 51;
+    .agent.v1.PiLsExecResult pi_ls_result = 52;
+    .agent.v1.ConversationSearchResult conversation_search_result = 53;
+    .agent.v1.AgentStoreConflictResult agent_store_conflict_result = 54;
+    .agent.v1.ShellResult mini_swe_agent_bash_result = 55;
+    .agent.v1.AdoptResult adopt_result = 56;
+  }
+}
+
+message ExecClientStreamClose {
+  uint32 id = 1;
+}
+
+message ExecClientThrow {
+  uint32 id = 1;
+  string error = 2;
+  optional string stack_trace = 3;
+  optional string error_code = 4;
+}
+
+message ExecServerMessage {
+  uint32 id = 1;
+  string exec_id = 15;
+  oneof message {
+    .agent.v1.ShellArgs shell_args = 2;
+    .agent.v1.WriteArgs write_args = 3;
+    .agent.v1.DeleteArgs delete_args = 4;
+    .agent.v1.GrepArgs grep_args = 5;
+    .agent.v1.ReadArgs read_args = 7;
+    .agent.v1.ReadArgs redacted_read_args = 29;
+    .agent.v1.LsArgs ls_args = 8;
+    .agent.v1.DiagnosticsArgs diagnostics_args = 9;
+    .agent.v1.RequestContextArgs request_context_args = 10;
+    .agent.v1.McpArgs mcp_args = 11;
+    .agent.v1.ShellArgs shell_stream_args = 14;
+    .agent.v1.BackgroundShellSpawnArgs background_shell_spawn_args = 16;
+    .agent.v1.ListMcpResourcesExecArgs list_mcp_resources_exec_args = 17;
+    .agent.v1.ReadMcpResourceExecArgs read_mcp_resource_exec_args = 18;
+    .agent.v1.McpStateExecArgs mcp_state_exec_args = 36;
+    .agent.v1.FetchArgs fetch_args = 20;
+    .agent.v1.RecordScreenArgs record_screen_args = 21;
+    .agent.v1.ComputerUseArgs computer_use_args = 22;
+    .agent.v1.WriteShellStdinArgs write_shell_stdin_args = 23;
+    .agent.v1.ExecuteHookArgs execute_hook_args = 27;
+    .agent.v1.SubagentArgs subagent_args = 28;
+    .agent.v1.ForceBackgroundShellArgs force_background_shell_args = 30;
+    .agent.v1.ForceBackgroundSubagentArgs force_background_subagent_args = 31;
+    .agent.v1.SubagentAwaitArgs subagent_await_args = 37;
+    .agent.v1.SmartModeClassifierArgs smart_mode_classifier_args = 38;
+    .agent.v1.CanvasDiagnosticsArgs canvas_diagnostics_args = 40;
+    .agent.v1.ShellAllowlistPrecheckArgs shell_allowlist_precheck_args = 41;
+    .agent.v1.McpAllowlistPrecheckArgs mcp_allowlist_precheck_args = 42;
+    .agent.v1.WebFetchAllowlistPrecheckArgs web_fetch_allowlist_precheck_args = 43;
+    .aiserver.v1.GetDiffRequest git_diff_request = 44;
+    .agent.v1.PiReadExecArgs pi_read_args = 45;
+    .agent.v1.PiBashExecArgs pi_bash_args = 46;
+    .agent.v1.PiEditExecArgs pi_edit_args = 47;
+    .agent.v1.PiWriteExecArgs pi_write_args = 48;
+    .agent.v1.PiGrepExecArgs pi_grep_args = 49;
+    .agent.v1.PiFindExecArgs pi_find_args = 50;
+    .agent.v1.PiLsExecArgs pi_ls_args = 51;
+    .agent.v1.ShellArgs mini_swe_agent_bash_args = 52;
+    .agent.v1.ConversationSearchArgs conversation_search_args = 53;
+    .agent.v1.AgentStoreConflictArgs agent_store_conflict_args = 54;
+    .agent.v1.AdoptArgs adopt_args = 56;
+  }
+  optional .agent.v1.SpanContext span_context = 19;
+  optional bool accept_hook_additional_contexts = 55;
+}
+
+message ExecuteHookArgs {
+  .agent.v1.ExecuteHookRequest request = 1;
+}
+
+message ExecuteHookRequest {
+  oneof request {
+    .agent.v1.PreCompactRequestQuery pre_compact = 1;
+    .agent.v1.SubagentStartRequestQuery subagent_start = 2;
+    .agent.v1.SubagentStopRequestQuery subagent_stop = 3;
+    .agent.v1.PreToolUseRequestQuery pre_tool_use = 4;
+    .agent.v1.PostToolUseRequestQuery post_tool_use = 5;
+    .agent.v1.PostToolUseFailureRequestQuery post_tool_use_failure = 6;
+    .agent.v1.BeforeSubmitPromptRequestQuery before_submit_prompt = 7;
+    .agent.v1.AfterAgentResponseRequestQuery after_agent_response = 8;
+    .agent.v1.AfterAgentThoughtRequestQuery after_agent_thought = 9;
+    .agent.v1.StopRequestQuery stop = 11;
+  }
+}
+
+message ExecuteHookResponse {
+  oneof response {
+    .agent.v1.PreCompactRequestResponse pre_compact = 1;
+    .agent.v1.SubagentStartRequestResponse subagent_start = 2;
+    .agent.v1.SubagentStopRequestResponse subagent_stop = 3;
+    .agent.v1.PreToolUseRequestResponse pre_tool_use = 4;
+    .agent.v1.PostToolUseRequestResponse post_tool_use = 5;
+    .agent.v1.PostToolUseFailureRequestResponse post_tool_use_failure = 6;
+    .agent.v1.BeforeSubmitPromptRequestResponse before_submit_prompt = 7;
+    .agent.v1.AfterAgentResponseRequestResponse after_agent_response = 8;
+    .agent.v1.AfterAgentThoughtRequestResponse after_agent_thought = 9;
+    .agent.v1.StopRequestResponse stop = 11;
+  }
+}
+
+message ExecuteHookResult {
+  .agent.v1.ExecuteHookResponse response = 1;
+}
+
+message SpanContext {
+  string trace_id = 1;
+  string span_id = 2;
+  optional uint32 trace_flags = 3;
+  optional string trace_state = 4;
+}

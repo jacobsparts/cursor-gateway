@@ -1,0 +1,88 @@
+syntax = "proto3";
+
+package agent.v1;
+
+
+message CustomSubagent {
+  string full_path = 1;
+  string name = 2;
+  string description = 3;
+  repeated string tools = 4;
+  string model = 5;
+  string prompt = 6;
+  .agent.v1.CustomSubagentPermissionMode permission_mode = 7;
+  bool is_background = 8;
+  optional string plugin = 9;
+  optional string marketplace = 10;
+  optional string plugin_id = 11;
+  optional string marketplace_id = 12;
+  bool force_default_model = 13;
+  optional string source = 14;
+}
+
+enum CustomSubagentPermissionMode {
+  CUSTOM_SUBAGENT_PERMISSION_MODE_UNSPECIFIED = 0;
+  CUSTOM_SUBAGENT_PERMISSION_MODE_DEFAULT = 1;
+  CUSTOM_SUBAGENT_PERMISSION_MODE_READONLY = 2;
+  CUSTOM_SUBAGENT_PERMISSION_MODE_AGENT_ONLY = 3;
+}
+
+message SubagentType {
+  oneof type {
+    .agent.v1.SubagentTypeUnspecified unspecified = 1;
+    .agent.v1.SubagentTypeComputerUse computer_use = 2;
+    .agent.v1.SubagentTypeCustom custom = 3;
+    .agent.v1.SubagentTypeExplore explore = 4;
+    .agent.v1.SubagentTypeMediaReview media_review = 5;
+    .agent.v1.SubagentTypeBash bash = 6;
+    .agent.v1.SubagentTypeBrowserUse browser_use = 7;
+    .agent.v1.SubagentTypeShell shell = 8;
+    .agent.v1.SubagentTypeVmSetupHelper vm_setup_helper = 9;
+    .agent.v1.SubagentTypeDebug debug = 10;
+    .agent.v1.SubagentTypeCursorGuide cursor_guide = 11;
+    .agent.v1.SubagentTypeWatchVideo watch_video = 12;
+  }
+}
+
+message SubagentTypeBash {
+}
+
+message SubagentTypeBrowserUse {
+}
+
+message SubagentTypeComputerUse {
+}
+
+message SubagentTypeCursorGuide {
+}
+
+message SubagentTypeCustom {
+  string name = 1;
+}
+
+message SubagentTypeDebug {
+}
+
+message SubagentTypeExplore {
+}
+
+message SubagentTypeMediaReview {
+}
+
+message SubagentTypeShell {
+}
+
+message SubagentTypeUnspecified {
+}
+
+message SubagentTypeVmSetupHelper {
+}
+
+message SubagentTypeWatchVideo {
+}
+
+enum TaskMode {
+  TASK_MODE_UNSPECIFIED = 0;
+  TASK_MODE_AGENT = 1;
+  TASK_MODE_PLAN = 2;
+}

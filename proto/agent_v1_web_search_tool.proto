@@ -1,0 +1,58 @@
+syntax = "proto3";
+
+package agent.v1;
+
+
+message WebSearchArgs {
+  string search_term = 1;
+  string tool_call_id = 2;
+}
+
+message WebSearchError {
+  string error = 1;
+}
+
+message WebSearchReference {
+  string title = 1;
+  string url = 2;
+  string chunk = 3;
+}
+
+message WebSearchRejected {
+  string reason = 1;
+}
+
+message WebSearchRequestQuery {
+  .agent.v1.WebSearchArgs args = 1;
+}
+
+message WebSearchRequestResponse {
+  oneof result {
+    .agent.v1.WebSearchRequestResponse.Approved approved = 1;
+    .agent.v1.WebSearchRequestResponse.Rejected rejected = 2;
+  }
+
+  message Approved {
+  }
+
+  message Rejected {
+    string reason = 1;
+  }
+}
+
+message WebSearchResult {
+  oneof result {
+    .agent.v1.WebSearchSuccess success = 1;
+    .agent.v1.WebSearchError error = 2;
+    .agent.v1.WebSearchRejected rejected = 3;
+  }
+}
+
+message WebSearchSuccess {
+  repeated .agent.v1.WebSearchReference references = 1;
+}
+
+message WebSearchToolCall {
+  .agent.v1.WebSearchArgs args = 1;
+  .agent.v1.WebSearchResult result = 2;
+}

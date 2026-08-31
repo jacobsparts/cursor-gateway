@@ -1,0 +1,113 @@
+syntax = "proto3";
+
+package agent.v1;
+
+import "agent_v1_agent.proto";
+import "agent_v1_selected_context.proto";
+import "agent_v1_subagents.proto";
+
+
+message ClientContinuationConfig {
+  int32 idle_threshold = 1;
+  int32 max_loops = 2;
+  string nudge_message = 3;
+  string escape_message_template = 4;
+  bool collect_background_children = 5;
+  string children_completed_message_template = 6;
+  int32 continuation_round_delay_ms = 7;
+}
+
+message ForceBackgroundSubagentArgs {
+  string tool_call_id = 1;
+}
+
+message ForceBackgroundSubagentResult {
+  .agent.v1.ForceBackgroundSubagentStatus status = 1;
+}
+
+enum ForceBackgroundSubagentStatus {
+  FORCE_BACKGROUND_SUBAGENT_STATUS_UNSPECIFIED = 0;
+  FORCE_BACKGROUND_SUBAGENT_STATUS_ACCEPTED = 1;
+  FORCE_BACKGROUND_SUBAGENT_STATUS_NOT_FOUND = 2;
+}
+
+message SubagentArgs {
+  string tool_call_id = 1;
+  string subagent_type = 2;
+  string model_id = 3;
+  string prompt = 4;
+  bool readonly = 5;
+  optional string resume_agent_id = 6;
+  optional bool run_in_background = 7;
+  .agent.v1.ClientContinuationConfig continuation_config = 8;
+  optional string parent_conversation_id = 9;
+  oneof credentials {
+    .agent.v1.ApiKeyCredentials api_key_credentials = 10;
+    .agent.v1.AzureCredentials azure_credentials = 11;
+    .agent.v1.BedrockCredentials bedrock_credentials = 12;
+  }
+  optional bool interrupt = 13;
+  .agent.v1.TaskMode mode = 14;
+  optional string fork_agent_id = 15;
+  optional string root_parent_conversation_id = 16;
+  optional .agent.v1.SelectedContext selected_context = 17;
+  optional bool direct_meta_parent_child_subagent = 18;
+  .agent.v1.SubagentExecutionEnvironment environment = 19;
+  optional string cloud_base_branch = 20;
+  repeated .agent.v1.RequestedModel.ModelParameterValue model_parameters = 21;
+}
+
+message SubagentAwaitArgs {
+  string agent_id = 1;
+  uint32 timeout_ms = 2;
+}
+
+message SubagentAwaitComplete {
+  string agent_id = 1;
+  optional string transcript_path = 2;
+  int32 tool_call_count = 3;
+  optional string final_message = 4;
+}
+
+message SubagentAwaitError {
+  optional string agent_id = 1;
+  string error = 2;
+}
+
+message SubagentAwaitNotFound {
+  string agent_id = 1;
+}
+
+message SubagentAwaitResult {
+  oneof result {
+    .agent.v1.SubagentAwaitComplete complete = 1;
+    .agent.v1.SubagentAwaitStillRunning still_running = 2;
+    .agent.v1.SubagentAwaitNotFound not_found = 3;
+    .agent.v1.SubagentAwaitError error = 4;
+  }
+}
+
+message SubagentAwaitStillRunning {
+  string agent_id = 1;
+  optional string transcript_path = 2;
+}
+
+message SubagentError {
+  optional string agent_id = 1;
+  string error = 2;
+}
+
+message SubagentResult {
+  oneof result {
+    .agent.v1.SubagentSuccess success = 1;
+    .agent.v1.SubagentError error = 2;
+  }
+}
+
+message SubagentSuccess {
+  string agent_id = 1;
+  optional string final_message = 2;
+  int32 tool_call_count = 3;
+  .agent.v1.SubagentBackgroundReason background_reason = 4;
+  optional string transcript_path = 5;
+}

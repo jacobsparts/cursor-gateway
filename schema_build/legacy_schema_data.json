@@ -1,0 +1,1982 @@
+{
+ "legacy_aliases": {
+  "AgentClientMessage": [
+   "AgentClientMessage"
+  ],
+  "AgentRunRequest": [
+   "RunRequest",
+   "Run_req"
+  ],
+  "AgentServerMessage": [
+   "Run_res"
+  ],
+  "BidiAppendRequest": [
+   "_BidiAppendRequest"
+  ],
+  "BidiRequestId": [
+   "_BidiRequestId"
+  ],
+  "ConversationAction": [
+   "ConversationAction"
+  ],
+  "ConversationStateStructure": [
+   "ConversationCheckpointUpdate"
+  ],
+  "ExecServerMessage": [
+   "ExecServerMessage"
+  ],
+  "FieldsEntry": [
+   "_StructEntry"
+  ],
+  "InteractionUpdate": [
+   "InteractionUpdate"
+  ],
+  "ListValue": [
+   "_ListValue"
+  ],
+  "McpTools": [
+   "_McpTools"
+  ],
+  "ModelDetails": [
+   "_ModelDetails"
+  ],
+  "PreFetchedBlob": [
+   "PrefetchedBlob"
+  ],
+  "Struct": [
+   "_Struct"
+  ],
+  "UserMessage": [
+   "UserMessage"
+  ],
+  "Value": [
+   "_Value"
+  ]
+ },
+ "legacy_field_names": {
+  "AgentClientMessage": {
+   "1": "runRequest",
+   "2": "execClientMessage",
+   "3": "kvClientMessage",
+   "4": "conversationAction",
+   "5": "execClientControlMessage",
+   "6": "interactionResponse",
+   "7": "clientHeartbeat",
+   "8": "prewarmRequest"
+  },
+  "AgentClientMessage_UserMessage": {
+   "10": "conversationStateBlobId",
+   "11": "subagentSystemReminder",
+   "13": "triggeringUserInfo",
+   "14": "executePlanInfo",
+   "15": "simulatedMessageMetadata",
+   "16": "promptReferenceId",
+   "17": "threadId",
+   "18": "textBlobId",
+   "19": "richTextBlobId",
+   "21": "hookAdditionalContexts",
+   "22": "customModeIntent",
+   "5": "isSimulatedMsg",
+   "6": "bestOfNGroupId",
+   "7": "tryUseBestOfNPromotion",
+   "8": "richText",
+   "9": "simulatedMsgReason"
+  },
+  "AgentLayoutPolicy": {
+   "1": "allowedActionIds",
+   "2": "deniedActionIds"
+  },
+  "AgentSkill": {
+   "1": "fullPath",
+   "3": "description",
+   "5": "environments",
+   "6": "disabledEnvironments",
+   "8": "disableModelInvocation"
+  },
+  "AgentTelemetryConfig": {
+   "1": "enabled"
+  },
+  "AgentUrlConfig": {
+   "1": "agentUrl",
+   "2": "agentnUrl"
+  },
+  "AsyncAskQuestionCompletionAction": {
+   "1": "originalToolCallId",
+   "2": "originalArgs",
+   "3": "result"
+  },
+  "AvailableModel": {
+   "1": "name",
+   "10": "supportsImages",
+   "14": "supportsMaxMode",
+   "15": "contextTokenLimit",
+   "16": "contextTokenLimitForMaxMode",
+   "17": "clientDisplayName",
+   "18": "serverModelName",
+   "19": "supportsNonMaxMode",
+   "2": "defaultOn",
+   "20": "tooltipDataForMaxMode",
+   "21": "isRecommendedForBackgroundComposer",
+   "22": "supportsPlanMode",
+   "24": "inputboxShortModelName",
+   "25": "supportsSandboxing",
+   "26": "supportsCmdK",
+   "28": "backgroundComposerSortOrder",
+   "29": "parameterDefinitions",
+   "30": "variants",
+   "34": "upgradeModelId",
+   "36": "legacySlugs",
+   "37": "idAliases",
+   "38": "namedModelSectionIndex",
+   "39": "tagline",
+   "41": "vendorName",
+   "42": "vendor",
+   "45": "supportsSmartModeClassifier",
+   "46": "requiresDataRetention",
+   "47": "reasonForZdrConsentBlock",
+   "5": "supportsAgent",
+   "6": "degradationStatus",
+   "8": "tooltipData",
+   "9": "supportsThinking"
+  },
+  "AvailableModels_req": {
+   "5": "useModelParameters",
+   "7": "doNotUseMarkdown"
+  },
+  "AvailableModels_res": {
+   "10": "quickAgentModelConfig",
+   "11": "useModelParameters",
+   "12": "disableUnusedModelsAfterNHours",
+   "13": "upgradeUnchangedModelsAfterNHours",
+   "15": "displayConfiguration",
+   "16": "subagentModelConfigs",
+   "2": "models",
+   "4": "composerModelConfig",
+   "5": "cmdKModelConfig",
+   "6": "backgroundComposerModelConfig",
+   "7": "planExecutionModelConfig",
+   "8": "specModelConfig",
+   "9": "deepSearchModelConfig"
+  },
+  "BackgroundComposerConfig": {
+   "2": "showBackgroundAgentInBetaSettings",
+   "3": "windowInWindowPreloadCount",
+   "4": "windowInWindowPingIntervalMs",
+   "5": "showBackgroundAgentDisclaimer",
+   "6": "showBackgroundAgentSlackAd",
+   "7": "showBackgroundAgentHistoryAction",
+   "8": "maxWindowInWindows"
+  },
+  "BackgroundComposerModelConfig": {
+   "1": "defaultModel",
+   "2": "fallbackModels",
+   "3": "bestOfNDefaultModels"
+  },
+  "BackgroundShellAction": {
+   "1": "toolCallId"
+  },
+  "BackgroundShellSpawnArgs": {
+   "1": "command",
+   "10": "smartModeApproval",
+   "11": "hookApprovalRequirement",
+   "12": "skipApproval",
+   "13": "conversationId",
+   "2": "workingDirectory",
+   "3": "toolCallId",
+   "4": "parsingResult",
+   "5": "sandboxPolicy",
+   "6": "enableWriteShellStdinTool",
+   "7": "description",
+   "8": "classifierResult",
+   "9": "outputNotification"
+  },
+  "BackgroundSubagentAction": {
+   "1": "toolCallId"
+  },
+  "BackgroundTaskCompletionAction": {
+   "1": "completions"
+  },
+  "BidiAppendRequest": {
+   "1": "payloadHex",
+   "2": "requestId",
+   "3": "appendSeqno",
+   "4": "payload"
+  },
+  "BidiRequestId": {
+   "1": "requestId"
+  },
+  "BooleanModelParameter": {
+   "1": "values"
+  },
+  "BugBotV1": {
+   "3": "backgroundCallFrequencyMs"
+  },
+  "BugConfigResponse": {
+   "2": "bugBotV1"
+  },
+  "CancelAction": {
+   "1": "reason",
+   "3": "interruptedPendingToolCallResolutions"
+  },
+  "CancelSubagentAction": {
+   "1": "subagentId"
+  },
+  "CanvasDiagnosticsArgs": {
+   "1": "path",
+   "2": "toolCallId"
+  },
+  "ChatConfig": {
+   "10": "numSummarizationsBeforeWarningShown",
+   "11": "cursorRulesReadFileFixEnabled",
+   "12": "dontSendCtrlCBeforeCommand",
+   "13": "clientStatsigPollIntervalMs",
+   "15": "listDirV2PredefinedIgnoreGlobs",
+   "2": "fullContextTokenLimit",
+   "4": "maxRuleLength",
+   "5": "maxMcpTools",
+   "6": "warnMcpTools",
+   "7": "summarizationMessage"
+  },
+  "CheckpointTokenDetails": {
+   "1": "usedTokens",
+   "2": "maxTokens",
+   "3": "breakdown"
+  },
+  "CliModel": {
+   "1": "modelId",
+   "3": "displayModelId",
+   "4": "displayName",
+   "5": "displayNameShort",
+   "6": "aliases",
+   "7": "maxMode"
+  },
+  "ClientTracingConfig": {
+   "1": "globalSampleRate",
+   "2": "tracesSampleRate",
+   "3": "loggerSampleRate",
+   "4": "minidumpSampleRate",
+   "5": "errorRateLimit",
+   "6": "performanceUnitRateLimit",
+   "7": "profilesSampleRate",
+   "8": "jsonStringifySampleRate"
+  },
+  "ClientVersionStatus": {
+   "1": "updateLevel",
+   "2": "currentClientVersion",
+   "3": "minSupportedClientVersion",
+   "4": "minAllowedClientVersion",
+   "5": "message"
+  },
+  "CmdKModelConfig": {
+   "1": "defaultModel"
+  },
+  "CodebaseTelemetryConfig": {
+   "1": "enabled"
+  },
+  "CompletedGlobToolCall": {
+   "1": "args",
+   "2": "result"
+  },
+  "CompletedGlobToolCallArgs": {
+   "1": "targetDirectory",
+   "2": "globPattern"
+  },
+  "CompletedGrepToolCall": {
+   "1": "args",
+   "2": "result"
+  },
+  "CompletedGrepToolCallArgs": {
+   "1": "pattern",
+   "10": "headLimit",
+   "11": "multiline",
+   "14": "toolCallId",
+   "16": "offset",
+   "2": "path",
+   "3": "glob",
+   "6": "contextAfter",
+   "8": "caseInsensitive"
+  },
+  "CompletedReadToolCall": {
+   "1": "args",
+   "2": "result"
+  },
+  "CompletedReadToolCallArgs": {
+   "1": "path",
+   "2": "offset",
+   "3": "limit"
+  },
+  "CompletedToolCall": {
+   "1": "shellToolCall",
+   "4": "globToolCall",
+   "44": "getMcpToolsToolCall",
+   "5": "grepToolCall",
+   "57": "toolCallId",
+   "59": "startedAtMs",
+   "60": "completedAtMs",
+   "8": "readToolCall"
+  },
+  "ComposerModelConfig": {
+   "1": "defaultModel",
+   "2": "fallbackModels",
+   "3": "bestOfNDefaultModels"
+  },
+  "ComputerUseArgs": {
+   "1": "toolCallId",
+   "2": "actions"
+  },
+  "ConversationAction": {
+   "1": "userMessageAction",
+   "10": "cancelSubagentAction",
+   "11": "triggeringAuthId",
+   "12": "backgroundTaskCompletionAction",
+   "13": "backgroundShellAction",
+   "14": "backgroundSubagentAction",
+   "15": "triggeringUserInfo",
+   "16": "subscriptionNotificationAction",
+   "17": "requestContextParts",
+   "18": "goalContinuationAction",
+   "19": "injectContextAction",
+   "2": "resumeAction",
+   "3": "cancelAction",
+   "4": "summarizeAction",
+   "5": "shellCommandAction",
+   "6": "startPlanAction",
+   "7": "executePlanAction",
+   "8": "asyncAskQuestionCompletionAction"
+  },
+  "ConversationCheckpointUpdate": {
+   "1": "rootPromptMessagesJson",
+   "10": "mode",
+   "18": "readPaths",
+   "22": "agentType",
+   "26": "conversationStartedTimestampMs",
+   "27": "conversationStartedTimeZone",
+   "4": "pendingToolCalls",
+   "5": "tokenDetails",
+   "8": "turns",
+   "9": "previousWorkspaceUris"
+  },
+  "ConversationSearchArgs": {
+   "1": "query",
+   "2": "toolCallId",
+   "3": "limit"
+  },
+  "CurrentInAppAd": {
+   "1": "id",
+   "2": "header",
+   "3": "content",
+   "4": "buttons",
+   "6": "displayMode",
+   "9": "targetSurfaces"
+  },
+  "DeepSearchModelConfig": {
+   "1": "defaultModel"
+  },
+  "DeleteArgs": {
+   "1": "path",
+   "2": "toolCallId"
+  },
+  "DiagnosticsArgs": {
+   "1": "path",
+   "2": "toolCallId"
+  },
+  "DisplayConfiguration": {
+   "1": "routedModelViewConfig",
+   "2": "namedModelsViewConfig"
+  },
+  "DistributionMetric": {
+   "1": "name",
+   "2": "value",
+   "3": "tags"
+  },
+  "EffectiveUserPluginMarketplace": {
+   "1": "id",
+   "10": "createdAt",
+   "11": "updatedAt",
+   "19": "allowUserPublish",
+   "2": "name",
+   "3": "displayName",
+   "4": "description"
+  },
+  "Empty": {},
+  "EnumModelParameter": {
+   "1": "values"
+  },
+  "Environment": {
+   "1": "osVersion",
+   "10": "timeZone",
+   "11": "projectFolder",
+   "12": "agentTranscriptsFolder",
+   "14": "sandboxSupported",
+   "16": "sandboxNetworkHasDefaults",
+   "19": "computerUseSupported",
+   "2": "workspacePaths",
+   "20": "isWorkingDirHomeDir",
+   "21": "processWorkingDirectory",
+   "22": "smartModeClassifierAutoModeEnabled",
+   "3": "shell",
+   "7": "terminalsFolder",
+   "8": "agentSharedNotesFolder"
+  },
+  "EventDataValue": {
+   "1": "stringValue",
+   "3": "boolValue",
+   "4": "doubleValue"
+  },
+  "ExecClientControlMessage": {
+   "1": "streamClose",
+   "3": "heartbeat"
+  },
+  "ExecClientMessage": {
+   "1": "id",
+   "14": "shellStream",
+   "39": "localExecutionTimeMs",
+   "5": "grepResult",
+   "7": "readResult"
+  },
+  "ExecServerMessage": {
+   "1": "id",
+   "10": "requestContextArgs",
+   "11": "mcpArgs",
+   "14": "shellStreamArgs",
+   "15": "execId",
+   "16": "backgroundShellSpawnArgs",
+   "17": "listMcpResourcesExecArgs",
+   "18": "readMcpResourceExecArgs",
+   "19": "spanContext",
+   "2": "shellArgs",
+   "20": "fetchArgs",
+   "21": "recordScreenArgs",
+   "22": "computerUseArgs",
+   "23": "writeShellStdinArgs",
+   "27": "executeHookArgs",
+   "28": "subagentArgs",
+   "29": "redactedReadArgs",
+   "3": "writeArgs",
+   "30": "forceBackgroundShellArgs",
+   "31": "forceBackgroundSubagentArgs",
+   "36": "mcpStateExecArgs",
+   "37": "subagentAwaitArgs",
+   "38": "smartModeClassifierArgs",
+   "4": "deleteArgs",
+   "40": "canvasDiagnosticsArgs",
+   "41": "shellAllowlistPrecheckArgs",
+   "42": "mcpAllowlistPrecheckArgs",
+   "43": "webFetchAllowlistPrecheckArgs",
+   "44": "gitDiffRequest",
+   "45": "piReadArgs",
+   "46": "piBashArgs",
+   "47": "piEditArgs",
+   "48": "piWriteArgs",
+   "49": "piGrepArgs",
+   "5": "grepArgs",
+   "50": "piFindArgs",
+   "51": "piLsArgs",
+   "53": "conversationSearchArgs",
+   "55": "acceptHookAdditionalContexts",
+   "7": "readArgs",
+   "8": "lsArgs",
+   "9": "diagnosticsArgs"
+  },
+  "ExecSpanContext": {
+   "1": "traceId",
+   "2": "spanId",
+   "3": "traceFlags"
+  },
+  "ExecutableCommand": {
+   "1": "name",
+   "3": "fullText"
+  },
+  "ExecuteHookArgs": {
+   "1": "request"
+  },
+  "ExecutePlanAction": {
+   "1": "requestContext",
+   "2": "plan",
+   "3": "planFileUri",
+   "4": "planFileContent",
+   "5": "executionMode",
+   "6": "kickoffMessageId",
+   "7": "planId",
+   "8": "planFilePath"
+  },
+  "FeedbackCategory": {
+   "1": "id",
+   "2": "label"
+  },
+  "FeedbackCategoryGroup": {
+   "1": "id",
+   "2": "prompt",
+   "3": "categories"
+  },
+  "FeedbackRequest": {
+   "1": "requestId",
+   "2": "canonicalModelName",
+   "3": "categories",
+   "4": "categoryGroups",
+   "6": "title",
+   "7": "negativeTitle",
+   "8": "commentPlaceholder"
+  },
+  "FetchArgs": {
+   "1": "url",
+   "2": "toolCallId"
+  },
+  "FolderSizeLimit": {
+   "1": "maxTotalBytes",
+   "2": "maxNumFiles"
+  },
+  "ForceBackgroundShellArgs": {
+   "1": "toolCallId"
+  },
+  "ForceBackgroundSubagentArgs": {
+   "1": "toolCallId"
+  },
+  "GetBlobArgs": {
+   "1": "blobId"
+  },
+  "GetBlobResult": {
+   "1": "_field1"
+  },
+  "GetCliDownloadUrl_req": {
+   "2": "channel"
+  },
+  "GetCliDownloadUrl_res": {
+   "1": "url",
+   "2": "version"
+  },
+  "GetDefaultModelForCli_req": {},
+  "GetDefaultModelForCli_res": {
+   "1": "model"
+  },
+  "GetDiffRequest": {
+   "1": "cwd",
+   "10": "includeSpaceChanges",
+   "11": "committedOnly",
+   "12": "computePatchId",
+   "13": "returnHeadSha",
+   "14": "maxResponseBytes",
+   "2": "ref",
+   "3": "baseRef",
+   "4": "mergeBase",
+   "5": "targetPaths",
+   "6": "unifiedContextLines",
+   "7": "maxUntrackedFiles",
+   "8": "outputFormat",
+   "9": "submoduleRecurseDepth"
+  },
+  "GetEffectiveUserPlugins_req": {},
+  "GetEffectiveUserPlugins_res": {
+   "2": "marketplaces"
+  },
+  "GetGlobalCommands_req": {
+   "1": "surface"
+  },
+  "GetGlobalCommands_res": {
+   "1": "commands"
+  },
+  "GetManagedSkills_req": {},
+  "GetManagedSkills_res": {
+   "1": "skills"
+  },
+  "GetMe_req": {},
+  "GetMe_res": {
+   "1": "authId",
+   "12": "country",
+   "14": "cursorReviewOnboardingUseCursorGithubApp",
+   "19": "f19",
+   "2": "userId",
+   "3": "email",
+   "4": "firstName",
+   "5": "lastName",
+   "6": "workosId",
+   "8": "createdAt",
+   "9": "isEnterpriseUser"
+  },
+  "GetServerConfig_req": {},
+  "GetServerConfig_res": {
+   "1": "bugConfigResponse",
+   "10": "backgroundComposerConfig",
+   "13": "memoryMonitorConfig",
+   "14": "folderSizeLimit",
+   "15": "gitIndexingConfig",
+   "17": "currentInAppAd",
+   "18": "traceConfig",
+   "19": "runTerminalServerConfig",
+   "20": "onlineMetricsConfig",
+   "21": "interactionConfig",
+   "22": "agentTelemetryConfig",
+   "23": "clientVersionStatus",
+   "25": "agentLayoutPolicy",
+   "26": "useNlbForNal",
+   "27": "agentUrlConfig",
+   "28": "cliSandboxDefaultEnabled",
+   "3": "indexingConfig",
+   "33": "onboardingConfig",
+   "34": "bugbotConfig",
+   "35": "codebaseTelemetryConfig",
+   "37": "googleWorkspaceMcpOauthClient",
+   "4": "clientTracingConfig",
+   "5": "chatConfig",
+   "6": "configVersion",
+   "8": "profilingConfig",
+   "9": "metricsConfig"
+  },
+  "GetTeamAdminSettingsOrEmptyIfNotInTeam_req": {},
+  "GetTeamAdminSettingsOrEmptyIfNotInTeam_res": {},
+  "GetTeamReposOrEmptyIfNotInTeam_req": {},
+  "GetTeamReposOrEmptyIfNotInTeam_res": {},
+  "GetTeams_req": {},
+  "GetTeams_res": {},
+  "GetUsableModels_req": {},
+  "GetUsableModels_res": {
+   "1": "models"
+  },
+  "GetUserPrivacyMode_req": {},
+  "GetUserPrivacyMode_res": {
+   "1": "privacyMode"
+  },
+  "GitIndexingConfig": {
+   "1": "enabled"
+  },
+  "GlobToolCallArgs": {
+   "1": "targetDirectory",
+   "2": "globPattern"
+  },
+  "GlobToolCallResult": {
+   "1": "success"
+  },
+  "GlobToolCallSuccess": {
+   "2": "path",
+   "3": "files",
+   "4": "totalFiles"
+  },
+  "GlobalCommand": {
+   "1": "name",
+   "2": "content",
+   "3": "description",
+   "4": "availability",
+   "5": "argumentHint",
+   "6": "disabledSurfaces",
+   "7": "requiresAllWorkspaceFoldersAreGitRepos"
+  },
+  "GoalContinuationAction": {},
+  "GoogleWorkspaceMcpOauthClient": {
+   "1": "clientId",
+   "2": "clientSecret"
+  },
+  "GrepArgs": {
+   "1": "pattern",
+   "10": "headLimit",
+   "11": "multiline",
+   "12": "sort",
+   "13": "sortAscending",
+   "14": "toolCallId",
+   "15": "sandboxPolicy",
+   "16": "offset",
+   "2": "path",
+   "3": "glob",
+   "4": "outputMode",
+   "5": "contextBefore",
+   "6": "contextAfter",
+   "7": "context",
+   "8": "caseInsensitive",
+   "9": "type"
+  },
+  "GrepContent": {
+   "1": "matches",
+   "2": "totalLines",
+   "3": "totalMatchedLines",
+   "4": "clientTruncated",
+   "6": "headLimitApplied"
+  },
+  "GrepFileMatches": {
+   "1": "file",
+   "2": "matches"
+  },
+  "GrepFiles": {
+   "1": "files",
+   "2": "totalFiles"
+  },
+  "GrepLineMatch": {
+   "1": "lineNumber",
+   "2": "content",
+   "4": "isContextLine"
+  },
+  "GrepResult": {
+   "1": "success",
+   "2": "error"
+  },
+  "GrepSuccess": {
+   "1": "pattern",
+   "2": "path",
+   "3": "outputMode",
+   "4": "workspaceResults"
+  },
+  "GrepToolCallArgs": {
+   "1": "pattern",
+   "10": "headLimit",
+   "11": "multiline",
+   "14": "toolCallId",
+   "16": "offset",
+   "2": "path",
+   "3": "glob",
+   "6": "contextAfter",
+   "8": "caseInsensitive"
+  },
+  "GrepToolCallResult": {
+   "1": "success"
+  },
+  "GrepToolCallSuccess": {
+   "1": "pattern",
+   "2": "path",
+   "3": "outputMode",
+   "4": "workspaceResults"
+  },
+  "GrepWorkspaceResult": {
+   "2": "files",
+   "3": "content"
+  },
+  "GrepWorkspaceResults": {
+   "1": "workspaceResults"
+  },
+  "InAppAdButton": {
+   "1": "text",
+   "2": "buttonType",
+   "3": "externalUrl"
+  },
+  "InAppAdContent": {
+   "2": "title",
+   "3": "sections"
+  },
+  "InAppAdHeader": {
+   "1": "bannerUrl",
+   "2": "bannerUrlLight",
+   "3": "bannerUrlDark"
+  },
+  "InAppAdSection": {
+   "1": "iconSvg",
+   "2": "title",
+   "3": "description"
+  },
+  "IncrementMetric": {
+   "1": "name",
+   "2": "value",
+   "3": "tags"
+  },
+  "IndexingConfig": {
+   "1": "maxConcurrentUploads",
+   "11": "multiRootIndexingEnabled",
+   "12": "copyStatusCheckPeriodSeconds",
+   "13": "copyTimeoutSeconds",
+   "14": "maxBatchBytes",
+   "15": "maxBatchNumRequests",
+   "16": "maxSyncMerkleBatchSize",
+   "2": "absoluteMaxNumberFiles",
+   "3": "maxFileRetries",
+   "4": "syncConcurrency",
+   "5": "autoIndexingMaxNumFiles",
+   "6": "indexingPeriodSeconds",
+   "8": "incremental",
+   "9": "defaultUserPathEncryptionKey"
+  },
+  "InjectContextAction": {
+   "1": "injectionId",
+   "2": "expectedRunId",
+   "3": "userContext",
+   "4": "systemContext"
+  },
+  "InteractionConfig": {
+   "10": "metricsCombinedInpDropHighestCount",
+   "11": "metricsClickInpDropHighestCount",
+   "12": "metricsKeypressInpDropHighestCount",
+   "13": "metricsStartupThresholdSec",
+   "14": "analyticsSummaryEveryNWindows",
+   "15": "extHostLagSummaryIntervalSec",
+   "2": "metricsEnabled",
+   "3": "profilingIntervalSec",
+   "4": "metricsIntervalSec",
+   "5": "profilingMaxBufferSize",
+   "6": "profilingInteractionDurationThresholdMs",
+   "7": "profilingSampleIntervalMs",
+   "8": "metricsMinInteractionsForLoaf",
+   "9": "metricsMinForegroundTimeMs"
+  },
+  "InteractionUpdate": {
+   "1": "textDelta",
+   "10": "summaryStarted",
+   "11": "summaryCompleted",
+   "12": "shellOutputDelta",
+   "13": "heartbeat",
+   "14": "turnEnded",
+   "15": "toolCallDelta",
+   "16": "stepStarted",
+   "17": "stepCompleted",
+   "18": "promptSuggestion",
+   "19": "postRequestPrompt",
+   "2": "toolCallStarted",
+   "20": "activeBranchChange",
+   "21": "feedbackRequest",
+   "22": "responseComparison",
+   "25": "f25",
+   "3": "toolCallCompleted",
+   "4": "thinkingDelta",
+   "5": "thinkingCompleted",
+   "6": "userMessageAppended",
+   "7": "partialToolCall",
+   "8": "tokenDelta",
+   "9": "summary"
+  },
+  "KvClientMessage": {
+   "1": "id",
+   "2": "getBlobResult",
+   "3": "setBlobResult"
+  },
+  "KvServerMessage": {
+   "1": "id",
+   "2": "getBlobArgs",
+   "3": "setBlobArgs",
+   "4": "spanContext"
+  },
+  "KvSpanContext": {
+   "1": "traceId",
+   "2": "spanId",
+   "3": "traceFlags"
+  },
+  "ListMarketplaces_req": {},
+  "ListMarketplaces_res": {
+   "1": "marketplaces"
+  },
+  "ListMcpResourcesExecArgs": {
+   "1": "server"
+  },
+  "LogEntry": {
+   "1": "level",
+   "2": "message",
+   "3": "metadata",
+   "4": "timestamp",
+   "7": "key"
+  },
+  "LsArgs": {
+   "1": "path",
+   "2": "ignore",
+   "3": "toolCallId",
+   "4": "sandboxPolicy",
+   "5": "timeoutMs"
+  },
+  "ManagedSkill": {
+   "1": "id",
+   "2": "description",
+   "3": "content",
+   "4": "disableModelInvocation",
+   "5": "environments",
+   "6": "disabledEnvironments",
+   "7": "enabled",
+   "9": "resources"
+  },
+  "Marketplace": {
+   "1": "id",
+   "10": "createdAt",
+   "11": "updatedAt",
+   "19": "allowUserPublish",
+   "2": "name",
+   "3": "displayName",
+   "4": "description"
+  },
+  "MaxModeTooltipData": {
+   "7": "markdownContent"
+  },
+  "McpAllowlistPrecheckArgs": {
+   "1": "providerIdentifier",
+   "2": "toolName",
+   "3": "toolCallId"
+  },
+  "McpArgs": {
+   "1": "name",
+   "2": "arguments",
+   "3": "toolCallId",
+   "4": "providerIdentifier",
+   "5": "toolName",
+   "6": "smartModeApproval",
+   "7": "smartModeApprovalOnly",
+   "8": "skipApproval",
+   "9": "serverIdentifier"
+  },
+  "McpMetaToolOptions": {
+   "1": "enabled"
+  },
+  "McpStateExecArgs": {
+   "1": "args",
+   "2": "kickOnly"
+  },
+  "McpToolsToolCall": {
+   "1": "args",
+   "2": "result"
+  },
+  "McpToolsToolCallArgs": {
+   "4": "toolCallId"
+  },
+  "McpToolsToolCallError": {
+   "1": "error"
+  },
+  "McpToolsToolCallResult": {
+   "1": "success",
+   "2": "error"
+  },
+  "McpToolsToolCallSuccess": {
+   "1": "content"
+  },
+  "MemoryMonitorConfig": {
+   "3": "baseThresholdMb",
+   "4": "criticalOffsetMb",
+   "5": "processMemoryIntervalSec"
+  },
+  "MetricsConfig": {
+   "2": "enabledInPrivacyMode",
+   "3": "enabledInNonPrivacyMode"
+  },
+  "ModelDetails": {
+   "1": "_field1",
+   "3": "_field3",
+   "4": "_field4",
+   "5": "_field5",
+   "7": "_field7"
+  },
+  "ModelParameterDefinition": {
+   "1": "id",
+   "2": "name",
+   "3": "markdownTooltip",
+   "4": "parameterType",
+   "5": "isCycleableByHotkey"
+  },
+  "ModelParameterType": {
+   "1": "booleanParameter",
+   "2": "enumParameter"
+  },
+  "ModelParameterValue": {
+   "1": "value",
+   "2": "displayName",
+   "3": "increasesModelCost"
+  },
+  "ModelTooltipData": {
+   "7": "markdownContent"
+  },
+  "ModelVariant": {
+   "1": "parameterValues",
+   "10": "confirmationDialogue",
+   "11": "legacySlug",
+   "2": "displayName",
+   "3": "isMaxMode",
+   "4": "isDefaultMaxConfig",
+   "5": "isDefaultNonMaxConfig",
+   "6": "tooltipData",
+   "8": "displayNameOutsidePicker",
+   "9": "variantStringRepresentation"
+  },
+  "ModelVariantConfirmationDialogue": {
+   "1": "title",
+   "2": "body",
+   "3": "key"
+  },
+  "ModelVariantParameterValue": {
+   "1": "id",
+   "2": "value"
+  },
+  "ModelVariantTooltipData": {
+   "7": "markdownContent"
+  },
+  "ModelVendor": {
+   "1": "id",
+   "2": "displayName"
+  },
+  "NameAgent_req": {
+   "1": "userMessage"
+  },
+  "NameAgent_res": {
+   "1": "name"
+  },
+  "NamedModelsViewConfig": {
+   "2": "namedViewToRoutedModelViewToggle"
+  },
+  "NamedViewToRoutedModelViewToggle": {
+   "1": "markdown"
+  },
+  "OnboardingConfig": {
+   "1": "marketplacePluginNames"
+  },
+  "OnlineMetricsConfig": {
+   "1": "enabled",
+   "2": "maxRequestsTracked",
+   "3": "maxRequestsTrackedMb",
+   "4": "maxRequestRetentionSeconds",
+   "7": "numCommitsTracked",
+   "8": "timeIntervalsTrackedMinutes",
+   "9": "tooBigFileSizeBytes"
+  },
+  "PartialToolCall": {
+   "1": "callId",
+   "2": "toolCall",
+   "4": "modelCallId"
+  },
+  "PartialToolCallValue": {
+   "4": "globToolCall",
+   "44": "getMcpToolsToolCall",
+   "5": "grepToolCall",
+   "57": "toolCallId",
+   "59": "startedAtMs",
+   "8": "readToolCall"
+  },
+  "PiBashExecArgs": {
+   "1": "command",
+   "2": "timeout"
+  },
+  "PiEditExecArgs": {
+   "1": "path",
+   "2": "edits"
+  },
+  "PiFindExecArgs": {
+   "1": "pattern",
+   "2": "path",
+   "3": "limit"
+  },
+  "PiGrepExecArgs": {
+   "1": "pattern",
+   "2": "path",
+   "3": "glob",
+   "4": "ignoreCase",
+   "5": "literal",
+   "6": "context",
+   "7": "limit"
+  },
+  "PiLsExecArgs": {
+   "1": "path",
+   "2": "limit"
+  },
+  "PiReadExecArgs": {
+   "1": "path",
+   "2": "offset",
+   "3": "limit"
+  },
+  "PiWriteExecArgs": {
+   "1": "path",
+   "2": "content"
+  },
+  "PlanExecutionModelConfig": {
+   "1": "defaultModel",
+   "2": "fallbackModels"
+  },
+  "PrefetchedBlob": {
+   "1": "blobId",
+   "2": "value"
+  },
+  "QuickAgentModelConfig": {
+   "1": "defaultModel"
+  },
+  "ReadArgs": {
+   "1": "path",
+   "2": "toolCallId",
+   "4": "offset",
+   "5": "limit",
+   "6": "encodingHint"
+  },
+  "ReadMcpResourceExecArgs": {
+   "1": "server",
+   "2": "uri",
+   "3": "downloadPath",
+   "4": "toolCallId",
+   "5": "smartModeApproval"
+  },
+  "ReadRange": {
+   "1": "startLine",
+   "2": "endLine"
+  },
+  "ReadResult": {
+   "1": "success",
+   "2": "error"
+  },
+  "ReadSuccess": {
+   "1": "path",
+   "2": "content",
+   "3": "totalLines",
+   "4": "fileSize",
+   "8": "rangeApplied"
+  },
+  "ReadToolCallArgs": {
+   "1": "path",
+   "2": "offset",
+   "3": "limit"
+  },
+  "ReadToolCallError": {
+   "1": "errorMessage"
+  },
+  "ReadToolCallResult": {
+   "1": "success",
+   "2": "error"
+  },
+  "ReadToolCallSuccess": {
+   "1": "content",
+   "4": "totalLines",
+   "5": "fileSize",
+   "7": "path",
+   "8": "readRange"
+  },
+  "RecordScreenArgs": {
+   "1": "mode",
+   "2": "toolCallId",
+   "3": "saveAsFilename"
+  },
+  "ReportDistribution_req": {
+   "2": "metricsList"
+  },
+  "ReportDistribution_res": {},
+  "ReportIncrement_req": {
+   "2": "metricsList"
+  },
+  "ReportIncrement_res": {},
+  "RepositoryInfo": {
+   "1": "relativeWorkspacePath",
+   "10": "pathEncryptionKey",
+   "4": "repoName",
+   "5": "repoOwner",
+   "8": "orthogonalTransformSeed"
+  },
+  "RequestContext": {
+   "26": "commitAttributionMessage",
+   "27": "prAttributionMessage",
+   "28": "hooksConfig",
+   "29": "agentSkills",
+   "32": "supportsMcpAuth",
+   "33": "gitRepoInfoComplete",
+   "34": "mcpMetaToolOptions",
+   "4": "env",
+   "6": "repositoryInfo",
+   "9": "sharedNotesListing"
+  },
+  "RequestContextArgs": {
+   "2": "notesSessionId",
+   "3": "workspaceId",
+   "4": "readOnlyPinnedTreeSha",
+   "5": "readOnlyPluginCacheRoot",
+   "7": "useCached"
+  },
+  "RequestedModel": {
+   "1": "modelId",
+   "3": "parameters"
+  },
+  "RequestedModelParameter": {
+   "1": "id",
+   "2": "value"
+  },
+  "ResumeAction": {
+   "2": "requestContext"
+  },
+  "RoutedModelViewConfig": {
+   "2": "routedModelViewToNamedViewToggle",
+   "4": "hideSearchBar"
+  },
+  "RoutedModelViewToNamedViewToggle": {
+   "1": "titleMarkdown",
+   "2": "subtitle",
+   "3": "setToLastNamedModel"
+  },
+  "RunRequest": {
+   "1": "conversationState",
+   "10": "suggestNextPrompt",
+   "11": "subagentTypeName",
+   "12": "excludeWorkspaceContext",
+   "13": "harness",
+   "14": "selectedSubagentModels",
+   "15": "selectedSubagentModelDetails",
+   "16": "conversationGroupId",
+   "17": "prefetchedBlobs",
+   "18": "devRawModelSlug",
+   "19": "clientSupportsInlineImages",
+   "2": "action",
+   "20": "subagentModelOverrides",
+   "21": "canCreateCloudSubagents",
+   "22": "suppressSubagentProgressUpdateTool",
+   "23": "clientSupportsSendToUser",
+   "25": "runId",
+   "3": "modelDetails",
+   "4": "mcpTools",
+   "5": "conversationId",
+   "6": "mcpFileSystemOptions",
+   "7": "skillOptions",
+   "8": "customSystemPrompt",
+   "9": "requestedModel"
+  },
+  "RunTerminalServerConfig": {
+   "1": "compositeShellCommands"
+  },
+  "Run_req": {
+   "1": "runRequest",
+   "2": "execClientMessage",
+   "3": "kvClientMessage",
+   "4": "conversationAction",
+   "5": "execClientControlMessage",
+   "6": "interactionResponse",
+   "7": "clientHeartbeat",
+   "8": "prewarmRequest"
+  },
+  "Run_res": {
+   "1": "interactionUpdate",
+   "2": "execServerMessage",
+   "3": "conversationCheckpointUpdate",
+   "4": "kvServerMessage",
+   "8": "ttftBreakdown"
+  },
+  "Run_res_ShellArgs": {
+   "11": "isBackground",
+   "12": "skipApproval",
+   "16": "classifierResult",
+   "18": "outputNotification",
+   "19": "smartModeApproval",
+   "2": "workingDirectory",
+   "20": "hookApprovalRequirement",
+   "6": "hasInputRedirect",
+   "7": "hasOutputRedirect",
+   "9": "requestedSandboxPolicy"
+  },
+  "SandboxPolicy": {
+   "1": "type"
+  },
+  "SetBlobArgs": {
+   "1": "blobId",
+   "2": "blobData"
+  },
+  "ShellAllowlistPrecheckArgs": {
+   "1": "command",
+   "2": "workingDirectory",
+   "3": "parsingResult",
+   "4": "classifierResult",
+   "5": "toolCallId"
+  },
+  "ShellArgs": {
+   "1": "command",
+   "10": "fileOutputThresholdBytes",
+   "11": "isBackground",
+   "12": "skipApproval",
+   "13": "timeoutBehavior",
+   "14": "hardTimeout",
+   "15": "description",
+   "16": "classifierResult",
+   "17": "closeStdin",
+   "18": "outputNotification",
+   "19": "smartModeApproval",
+   "2": "workingDirectory",
+   "20": "hookApprovalRequirement",
+   "21": "conversationId",
+   "3": "timeout",
+   "4": "toolCallId",
+   "5": "simpleCommands",
+   "6": "hasInputRedirect",
+   "7": "hasOutputRedirect",
+   "8": "parsingResult",
+   "9": "requestedSandboxPolicy"
+  },
+  "ShellCommand": {
+   "1": "command"
+  },
+  "ShellCommandAction": {
+   "1": "shellCommand",
+   "2": "execId"
+  },
+  "ShellData": {
+   "1": "data"
+  },
+  "ShellExit": {
+   "2": "cwd",
+   "6": "localExecutionTimeMs"
+  },
+  "ShellParsingResult": {
+   "2": "executableCommands"
+  },
+  "ShellResult": {
+   "1": "success",
+   "102": "isBackground"
+  },
+  "ShellStart": {
+   "1": "sandboxPolicy"
+  },
+  "ShellStream": {
+   "1": "stdout",
+   "3": "exit",
+   "4": "start"
+  },
+  "ShellSuccess": {
+   "1": "command",
+   "10": "interleavedOutput",
+   "13": "localExecutionTimeMs",
+   "5": "stdout",
+   "7": "executionTime"
+  },
+  "ShellToolCall": {
+   "1": "args",
+   "2": "result",
+   "3": "description"
+  },
+  "ShellToolCallDelta": {
+   "1": "stdout"
+  },
+  "ShellToolCallStdout": {
+   "1": "content"
+  },
+  "SmartModeClassifierArgs": {
+   "1": "toolCallId",
+   "2": "parentConversationId",
+   "3": "target",
+   "4": "conversationContext"
+  },
+  "SpecModelConfig": {
+   "1": "defaultModel"
+  },
+  "StartPlanAction": {
+   "1": "userMessage",
+   "2": "requestContext",
+   "3": "isSpec"
+  },
+  "StartedGlobToolCall": {
+   "1": "args"
+  },
+  "StartedGrepToolCall": {
+   "1": "args"
+  },
+  "StartedReadToolCall": {
+   "1": "args"
+  },
+  "StartedToolCall": {
+   "1": "shellToolCall",
+   "4": "globToolCall",
+   "44": "getMcpToolsToolCall",
+   "5": "grepToolCall",
+   "57": "toolCallId",
+   "59": "startedAtMs",
+   "8": "readToolCall"
+  },
+  "StepCompleted": {
+   "1": "stepId",
+   "2": "stepDurationMs"
+  },
+  "StreamClose": {
+   "1": "id"
+  },
+  "SubagentArgs": {
+   "1": "toolCallId",
+   "10": "apiKeyCredentials",
+   "11": "azureCredentials",
+   "12": "bedrockCredentials",
+   "13": "interrupt",
+   "14": "mode",
+   "15": "forkAgentId",
+   "16": "rootParentConversationId",
+   "17": "selectedContext",
+   "18": "directMetaParentChildSubagent",
+   "19": "environment",
+   "2": "subagentType",
+   "20": "cloudBaseBranch",
+   "3": "modelId",
+   "4": "prompt",
+   "5": "readonly",
+   "6": "resumeAgentId",
+   "7": "runInBackground",
+   "8": "continuationConfig",
+   "9": "parentConversationId"
+  },
+  "SubagentAwaitArgs": {
+   "1": "agentId",
+   "2": "timeoutMs"
+  },
+  "SubagentModelConfig": {
+   "1": "defaultModel",
+   "2": "fallbackModels"
+  },
+  "SubmitLogs_req": {
+   "1": "logs"
+  },
+  "SubmitLogs_res": {
+   "1": "success",
+   "3": "logsProcessed",
+   "4": "logsDropped"
+  },
+  "SubscriptionNotificationAction": {
+   "1": "notifications",
+   "2": "requestContext",
+   "3": "sendToInteractionListener"
+  },
+  "SummarizeAction": {},
+  "TextDelta": {
+   "1": "text"
+  },
+  "ThinkingCompleted": {
+   "1": "thinkingDurationMs"
+  },
+  "ThinkingDelta": {
+   "1": "text",
+   "2": "thinkingStyle"
+  },
+  "TokenBreakdown": {
+   "1": "totalUsedTokens",
+   "2": "maxTokens",
+   "3": "categories"
+  },
+  "TokenCategory": {
+   "1": "id",
+   "2": "label",
+   "3": "estimatedTokens",
+   "4": "characterCount"
+  },
+  "TokenDelta": {
+   "1": "tokens"
+  },
+  "ToolCallCompleted": {
+   "1": "callId",
+   "2": "toolCall",
+   "3": "modelCallId"
+  },
+  "ToolCallDelta": {
+   "1": "callId",
+   "2": "toolCallDelta",
+   "3": "modelCallId"
+  },
+  "ToolCallDeltaValue": {
+   "1": "shellToolCallDelta"
+  },
+  "ToolCallStarted": {
+   "1": "callId",
+   "2": "toolCall",
+   "3": "modelCallId"
+  },
+  "TraceConfig": {
+   "1": "enabled",
+   "2": "bufferSize",
+   "3": "flushIntervalMs",
+   "4": "sampleRate",
+   "5": "internalSampleRate",
+   "6": "internalExtHostSampleRate"
+  },
+  "TrackEvents_req": {
+   "1": "events"
+  },
+  "TrackEvents_res": {},
+  "TrackedEvent": {
+   "1": "eventName",
+   "2": "eventData",
+   "3": "timestamp"
+  },
+  "TtftBreakdown": {
+   "1": "serverFirstTokenMs",
+   "2": "preStreamSetupMs",
+   "3": "waitForFirstEventMs",
+   "4": "providerTtftMs"
+  },
+  "TurnEnded": {
+   "1": "inputTokens",
+   "2": "outputTokens",
+   "3": "cacheReadTokens",
+   "4": "cacheWriteTokens",
+   "5": "reasoningTokens"
+  },
+  "UsableModel": {
+   "1": "modelId",
+   "3": "displayModelId",
+   "4": "displayName",
+   "5": "displayNameShort",
+   "6": "aliases",
+   "7": "maxMode"
+  },
+  "UserMessage": {
+   "1": "text",
+   "2": "messageId",
+   "3": "selectedContext",
+   "4": "mode"
+  },
+  "UserMessageAction": {
+   "1": "userMessage",
+   "2": "requestContext",
+   "3": "sendToInteractionListener",
+   "4": "prependUserMessages",
+   "6": "interruptedPendingToolCallResolutions",
+   "7": "conversationHistory"
+  },
+  "WebFetchAllowlistPrecheckArgs": {
+   "1": "url",
+   "2": "toolCallId"
+  },
+  "WriteArgs": {
+   "1": "path",
+   "2": "fileText",
+   "3": "toolCallId",
+   "4": "returnFileContentAfterWrite",
+   "5": "fileBytes",
+   "6": "encodingHint"
+  },
+  "WriteShellStdinArgs": {
+   "1": "shellId",
+   "2": "chars"
+  },
+  "_BidiAppendRequest": {
+   "1": "payloadHex",
+   "2": "requestId",
+   "3": "appendSeqno",
+   "4": "payload"
+  },
+  "_BidiRequestId": {
+   "1": "requestId"
+  },
+  "_BoundaryBlob": {
+   "1": "structure"
+  },
+  "_BoundaryStructure": {
+   "1": "userMessage",
+   "2": "step",
+   "3": "requestId",
+   "4": "_field4",
+   "5": "_field5"
+  },
+  "_ClientControlMessage": {
+   "3": "_field3"
+  },
+  "_ClientControlReason": {
+   "1": "reason"
+  },
+  "_ClientHeartbeat": {},
+  "_FilteredUsageEvent": {
+   "1": "timestamp",
+   "23": "conversationId",
+   "8": "_field8",
+   "9": "tokenUsage"
+  },
+  "_FilteredUsageRequest": {
+   "1": "_field1",
+   "2": "startDate",
+   "3": "endDate",
+   "6": "page",
+   "7": "pageSize"
+  },
+  "_FilteredUsageResponse": {
+   "3": "events"
+  },
+  "_FilteredUsageToken": {
+   "1": "uncachedInput",
+   "2": "outputTokens",
+   "3": "cacheWrite",
+   "4": "cacheRead"
+  },
+  "_HistoricalToolOutcome": {
+   "1": "_field1",
+   "2": "_field2"
+  },
+  "_HistoricalToolStep": {
+   "2": "_field2"
+  },
+  "_HistoricalToolStepContainer": {
+   "15": "_field15"
+  },
+  "_HistoricalToolStepPayload": {
+   "1": "_field1",
+   "2": "_field2"
+  },
+  "_HistoricalToolText": {
+   "1": "content"
+  },
+  "_HistoricalToolTextWrapper": {
+   "1": "_field1"
+  },
+  "_HistoricalTurn": {
+   "1": "_field1",
+   "2": "_field2"
+  },
+  "_ListValue": {
+   "1": "values"
+  },
+  "_McpTool": {
+   "1": "_field1",
+   "2": "_field2",
+   "4": "_field4",
+   "5": "_field5",
+   "6": "_field6"
+  },
+  "_McpTools": {
+   "1": "_field1"
+  },
+  "_ModelDetails": {
+   "1": "_field1",
+   "3": "_field3",
+   "4": "_field4",
+   "5": "_field5",
+   "7": "_field7"
+  },
+  "_Struct": {
+   "1": "fields"
+  },
+  "_StructEntry": {
+   "1": "key",
+   "2": "value"
+  },
+  "_Value": {
+   "1": "nullValue",
+   "2": "numberValue",
+   "3": "stringValue",
+   "4": "boolValue",
+   "5": "structValue",
+   "6": "listValue"
+  }
+ },
+ "synthetic": {
+  "Empty": [],
+  "_BoundaryBlob": [
+   {
+    "enum": null,
+    "map": null,
+    "name": "structure",
+    "num": 1,
+    "packed": false,
+    "rep": false,
+    "type": "M:_BoundaryStructure"
+   }
+  ],
+  "_BoundaryStructure": [
+   {
+    "enum": null,
+    "map": null,
+    "name": "userMessage",
+    "num": 1,
+    "packed": false,
+    "rep": false,
+    "type": "bytes"
+   },
+   {
+    "enum": null,
+    "map": null,
+    "name": "step",
+    "num": 2,
+    "packed": false,
+    "rep": true,
+    "type": "bytes"
+   },
+   {
+    "enum": null,
+    "map": null,
+    "name": "requestId",
+    "num": 3,
+    "packed": false,
+    "rep": false,
+    "type": "string"
+   },
+   {
+    "enum": null,
+    "map": null,
+    "name": "_field4",
+    "num": 4,
+    "packed": false,
+    "rep": false,
+    "type": "bytes"
+   },
+   {
+    "enum": null,
+    "map": null,
+    "name": "_field5",
+    "num": 5,
+    "packed": false,
+    "rep": false,
+    "type": "bool"
+   }
+  ],
+  "_FilteredUsageEvent": [
+   {
+    "enum": null,
+    "map": null,
+    "name": "timestamp",
+    "num": 1,
+    "packed": false,
+    "rep": false,
+    "type": "int64"
+   },
+   {
+    "enum": null,
+    "map": null,
+    "name": "_field8",
+    "num": 8,
+    "packed": false,
+    "rep": false,
+    "type": "int64"
+   },
+   {
+    "enum": null,
+    "map": null,
+    "name": "tokenUsage",
+    "num": 9,
+    "packed": false,
+    "rep": false,
+    "type": "M:_FilteredUsageToken"
+   },
+   {
+    "enum": null,
+    "map": null,
+    "name": "conversationId",
+    "num": 23,
+    "packed": false,
+    "rep": false,
+    "type": "string"
+   }
+  ],
+  "_FilteredUsageRequest": [
+   {
+    "enum": null,
+    "map": null,
+    "name": "_field1",
+    "num": 1,
+    "packed": false,
+    "rep": false,
+    "type": "int32"
+   },
+   {
+    "enum": null,
+    "map": null,
+    "name": "startDate",
+    "num": 2,
+    "packed": false,
+    "rep": false,
+    "type": "int64"
+   },
+   {
+    "enum": null,
+    "map": null,
+    "name": "endDate",
+    "num": 3,
+    "packed": false,
+    "rep": false,
+    "type": "int64"
+   },
+   {
+    "enum": null,
+    "map": null,
+    "name": "page",
+    "num": 6,
+    "packed": false,
+    "rep": false,
+    "type": "int32"
+   },
+   {
+    "enum": null,
+    "map": null,
+    "name": "pageSize",
+    "num": 7,
+    "packed": false,
+    "rep": false,
+    "type": "int32"
+   }
+  ],
+  "_FilteredUsageResponse": [
+   {
+    "enum": null,
+    "map": null,
+    "name": "events",
+    "num": 3,
+    "packed": false,
+    "rep": true,
+    "type": "M:_FilteredUsageEvent"
+   }
+  ],
+  "_FilteredUsageToken": [
+   {
+    "enum": null,
+    "map": null,
+    "name": "uncachedInput",
+    "num": 1,
+    "packed": false,
+    "rep": false,
+    "type": "int64"
+   },
+   {
+    "enum": null,
+    "map": null,
+    "name": "outputTokens",
+    "num": 2,
+    "packed": false,
+    "rep": false,
+    "type": "int64"
+   },
+   {
+    "enum": null,
+    "map": null,
+    "name": "cacheWrite",
+    "num": 3,
+    "packed": false,
+    "rep": false,
+    "type": "int64"
+   },
+   {
+    "enum": null,
+    "map": null,
+    "name": "cacheRead",
+    "num": 4,
+    "packed": false,
+    "rep": false,
+    "type": "int64"
+   }
+  ],
+  "_HistoricalToolOutcome": [
+   {
+    "enum": null,
+    "map": null,
+    "name": "_field1",
+    "num": 1,
+    "packed": false,
+    "rep": false,
+    "type": "M:_HistoricalToolText"
+   },
+   {
+    "enum": null,
+    "map": null,
+    "name": "_field2",
+    "num": 2,
+    "packed": false,
+    "rep": false,
+    "type": "bool"
+   }
+  ],
+  "_HistoricalToolStep": [
+   {
+    "enum": null,
+    "map": null,
+    "name": "_field2",
+    "num": 2,
+    "packed": false,
+    "rep": false,
+    "type": "M:_HistoricalToolStepContainer"
+   }
+  ],
+  "_HistoricalToolStepContainer": [
+   {
+    "enum": null,
+    "map": null,
+    "name": "_field15",
+    "num": 15,
+    "packed": false,
+    "rep": false,
+    "type": "M:_HistoricalToolStepPayload"
+   }
+  ],
+  "_HistoricalToolStepPayload": [
+   {
+    "enum": null,
+    "map": null,
+    "name": "_field1",
+    "num": 1,
+    "packed": false,
+    "rep": false,
+    "type": "M:McpArgs"
+   },
+   {
+    "enum": null,
+    "map": null,
+    "name": "_field2",
+    "num": 2,
+    "packed": false,
+    "rep": false,
+    "type": "M:_HistoricalToolOutcome"
+   }
+  ],
+  "_HistoricalToolText": [
+   {
+    "enum": null,
+    "map": null,
+    "name": "content",
+    "num": 1,
+    "packed": false,
+    "rep": false,
+    "type": "string"
+   }
+  ],
+  "_HistoricalToolTextWrapper": [
+   {
+    "enum": null,
+    "map": null,
+    "name": "_field1",
+    "num": 1,
+    "packed": false,
+    "rep": false,
+    "type": "M:_HistoricalToolText"
+   }
+  ],
+  "_HistoricalTurn": [
+   {
+    "enum": null,
+    "map": null,
+    "name": "_field1",
+    "num": 1,
+    "packed": false,
+    "rep": false,
+    "type": "bytes"
+   },
+   {
+    "enum": null,
+    "map": null,
+    "name": "_field2",
+    "num": 2,
+    "packed": false,
+    "rep": true,
+    "type": "bytes"
+   }
+  ],
+  "_McpTool": [
+   {
+    "enum": null,
+    "map": null,
+    "name": "_field1",
+    "num": 1,
+    "packed": false,
+    "rep": false,
+    "type": "string"
+   },
+   {
+    "enum": null,
+    "map": null,
+    "name": "_field2",
+    "num": 2,
+    "packed": false,
+    "rep": false,
+    "type": "string"
+   },
+   {
+    "enum": null,
+    "map": null,
+    "name": "_field4",
+    "num": 4,
+    "packed": false,
+    "rep": false,
+    "type": "string"
+   },
+   {
+    "enum": null,
+    "map": null,
+    "name": "_field5",
+    "num": 5,
+    "packed": false,
+    "rep": false,
+    "type": "string"
+   },
+   {
+    "enum": null,
+    "map": null,
+    "name": "_field6",
+    "num": 6,
+    "packed": false,
+    "rep": false,
+    "type": "string"
+   }
+  ],
+  "_McpTools": [
+   {
+    "enum": null,
+    "map": null,
+    "name": "_field1",
+    "num": 1,
+    "packed": false,
+    "rep": true,
+    "type": "M:_McpTool"
+   }
+  ]
+ }
+}

@@ -1,0 +1,54 @@
+syntax = "proto3";
+
+package agent.v1;
+
+
+message SwitchModeArgs {
+  string target_mode_id = 1;
+  optional string explanation = 2;
+  string tool_call_id = 3;
+}
+
+message SwitchModeError {
+  string error = 1;
+}
+
+message SwitchModeRejected {
+  string reason = 1;
+}
+
+message SwitchModeRequestQuery {
+  .agent.v1.SwitchModeArgs args = 1;
+}
+
+message SwitchModeRequestResponse {
+  oneof result {
+    .agent.v1.SwitchModeRequestResponse.Approved approved = 1;
+    .agent.v1.SwitchModeRequestResponse.Rejected rejected = 2;
+  }
+
+  message Approved {
+  }
+
+  message Rejected {
+    string reason = 1;
+  }
+}
+
+message SwitchModeResult {
+  oneof result {
+    .agent.v1.SwitchModeSuccess success = 1;
+    .agent.v1.SwitchModeError error = 2;
+    .agent.v1.SwitchModeRejected rejected = 3;
+  }
+}
+
+message SwitchModeSuccess {
+  string from_mode_id = 1;
+  string to_mode_id = 2;
+}
+
+message SwitchModeToolCall {
+  .agent.v1.SwitchModeArgs args = 1;
+  .agent.v1.SwitchModeResult result = 2;
+}

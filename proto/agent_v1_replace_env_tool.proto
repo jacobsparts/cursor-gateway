@@ -1,0 +1,53 @@
+syntax = "proto3";
+
+package agent.v1;
+
+
+message ReplaceEnvArgs {
+  .agent.v1.ReplaceEnvConfig config = 1;
+  .agent.v1.ReplaceEnvMode mode = 2;
+  repeated .agent.v1.RepoCheckoutRefOverride checkout_ref_overrides = 3;
+}
+
+message ReplaceEnvConfig {
+  string install_script = 1;
+  string dockerfile_contents = 2;
+}
+
+message ReplaceEnvFailure {
+  string error_message = 1;
+  string setup_logs = 2;
+}
+
+enum ReplaceEnvMode {
+  REPLACE_ENV_MODE_UNSPECIFIED = 0;
+  REPLACE_ENV_MODE_CUSTOM = 1;
+  REPLACE_ENV_MODE_CLEAN_SLATE = 2;
+  REPLACE_ENV_MODE_DEFAULT = 3;
+}
+
+message ReplaceEnvResult {
+  oneof result {
+    .agent.v1.ReplaceEnvSuccess success = 1;
+    .agent.v1.ReplaceEnvFailure failure = 2;
+  }
+}
+
+message ReplaceEnvSuccess {
+  string setup_logs = 1;
+}
+
+message ReplaceEnvToolCall {
+  .agent.v1.ReplaceEnvArgs args = 1;
+  .agent.v1.ReplaceEnvResult result = 2;
+  string associated_pod_key = 3;
+}
+
+message ReplaceEnvToolCallDelta {
+  string associated_pod_key = 1;
+}
+
+message RepoCheckoutRefOverride {
+  string repo_url = 1;
+  string ref = 2;
+}

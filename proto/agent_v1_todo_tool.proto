@@ -1,0 +1,74 @@
+syntax = "proto3";
+
+package agent.v1;
+
+
+message ReadTodosArgs {
+  repeated .agent.v1.TodoStatus status_filter = 1;
+  repeated string id_filter = 2;
+}
+
+message ReadTodosError {
+  string error = 1;
+}
+
+message ReadTodosResult {
+  oneof result {
+    .agent.v1.ReadTodosSuccess success = 1;
+    .agent.v1.ReadTodosError error = 2;
+  }
+}
+
+message ReadTodosSuccess {
+  repeated .agent.v1.TodoItem todos = 1;
+  int32 total_count = 2;
+}
+
+message ReadTodosToolCall {
+  .agent.v1.ReadTodosArgs args = 1;
+  .agent.v1.ReadTodosResult result = 2;
+}
+
+message TodoItem {
+  string id = 1;
+  string content = 2;
+  .agent.v1.TodoStatus status = 3;
+  int64 created_at = 4;
+  int64 updated_at = 5;
+  repeated string dependencies = 6;
+}
+
+enum TodoStatus {
+  TODO_STATUS_UNSPECIFIED = 0;
+  TODO_STATUS_PENDING = 1;
+  TODO_STATUS_IN_PROGRESS = 2;
+  TODO_STATUS_COMPLETED = 3;
+  TODO_STATUS_CANCELLED = 4;
+}
+
+message UpdateTodosArgs {
+  repeated .agent.v1.TodoItem todos = 1;
+  bool merge = 2;
+}
+
+message UpdateTodosError {
+  string error = 1;
+}
+
+message UpdateTodosResult {
+  oneof result {
+    .agent.v1.UpdateTodosSuccess success = 1;
+    .agent.v1.UpdateTodosError error = 2;
+  }
+}
+
+message UpdateTodosSuccess {
+  repeated .agent.v1.TodoItem todos = 1;
+  int32 total_count = 2;
+  bool was_merge = 3;
+}
+
+message UpdateTodosToolCall {
+  .agent.v1.UpdateTodosArgs args = 1;
+  .agent.v1.UpdateTodosResult result = 2;
+}

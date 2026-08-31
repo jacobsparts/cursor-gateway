@@ -1,0 +1,69 @@
+syntax = "proto3";
+
+package agent.v1;
+
+import "agent_v1_sandbox.proto";
+import "agent_v1_shell_exec.proto";
+import "agent_v1_utils.proto";
+
+
+message BackgroundShellSpawnArgs {
+  string command = 1;
+  string working_directory = 2;
+  string tool_call_id = 3;
+  .agent.v1.ShellCommandParsingResult parsing_result = 4;
+  optional .agent.v1.SandboxPolicy sandbox_policy = 5;
+  bool enable_write_shell_stdin_tool = 6;
+  optional string description = 7;
+  optional .agent.v1.CommandClassifierResult classifier_result = 8;
+  optional .agent.v1.ShellOutputNotificationConfig output_notification = 9;
+  optional .agent.v1.SmartModeApproval smart_mode_approval = 10;
+  optional .agent.v1.ShellHookApprovalRequirement hook_approval_requirement = 11;
+  bool skip_approval = 12;
+  optional string conversation_id = 13;
+  repeated string admin_command_denylist = 14;
+}
+
+message BackgroundShellSpawnError {
+  string command = 1;
+  string working_directory = 2;
+  string error = 3;
+}
+
+message BackgroundShellSpawnResult {
+  oneof result {
+    .agent.v1.BackgroundShellSpawnSuccess success = 1;
+    .agent.v1.BackgroundShellSpawnError error = 2;
+    .agent.v1.ShellRejected rejected = 3;
+    .agent.v1.ShellPermissionDenied permission_denied = 4;
+    .agent.v1.ShellSandboxUnsupported sandbox_unsupported = 5;
+  }
+}
+
+message BackgroundShellSpawnSuccess {
+  uint32 shell_id = 1;
+  string command = 2;
+  string working_directory = 3;
+  optional uint32 pid = 4;
+}
+
+message WriteShellStdinArgs {
+  uint32 shell_id = 1;
+  string chars = 2;
+}
+
+message WriteShellStdinError {
+  string error = 1;
+}
+
+message WriteShellStdinResult {
+  oneof result {
+    .agent.v1.WriteShellStdinSuccess success = 1;
+    .agent.v1.WriteShellStdinError error = 2;
+  }
+}
+
+message WriteShellStdinSuccess {
+  uint32 shell_id = 1;
+  uint32 terminal_file_length_before_input_written = 2;
+}

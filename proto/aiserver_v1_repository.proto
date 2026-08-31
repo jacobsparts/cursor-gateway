@@ -1,0 +1,936 @@
+syntax = "proto3";
+
+package aiserver.v1;
+
+import "aiserver_v1_symbolic_context.proto";
+import "aiserver_v1_utils.proto";
+
+
+message AdminRemoveRepositoryRequest {
+  int32 codebase_id = 1;
+}
+
+message AdminRemoveRepositoryResponse {
+}
+
+message BatchRepositoryStatusRequest {
+  repeated .aiserver.v1.RepositoryStatusRequest requests = 1;
+}
+
+message BatchRepositoryStatusResponse {
+  repeated .aiserver.v1.RepositoryStatusResponse responses = 1;
+}
+
+enum ChunkingStrategy {
+  CHUNKING_STRATEGY_UNSPECIFIED = 0;
+  CHUNKING_STRATEGY_DEFAULT = 1;
+}
+
+message ClientRepositoryInfo {
+  double orthogonal_transform_seed = 1;
+}
+
+message CodeResult {
+  .aiserver.v1.CodeBlock code_block = 1;
+  float score = 2;
+}
+
+message CodeResultWithClassificationInfo {
+  .aiserver.v1.CodeResult code_result = 1;
+  optional .aiserver.v1.CodeResultWithClassificationInfo.LineNumberClassification line_number_classification = 2;
+
+  message LineNumberClassification {
+    .aiserver.v1.DetailedLine detailed_line = 1;
+    string query_computed_for = 2;
+    repeated string matched_strings = 3;
+    .aiserver.v1.SimpleRange highlight_range = 4;
+  }
+}
+
+enum DatabaseProvider {
+  DATABASE_PROVIDER_UNSPECIFIED = 0;
+  DATABASE_PROVIDER_AURORA = 1;
+  DATABASE_PROVIDER_PLANETSCALE = 2;
+}
+
+message EnsureIndexCreatedRequest {
+  .aiserver.v1.RepositoryInfo repository = 1;
+}
+
+message EnsureIndexCreatedResponse {
+}
+
+message FastRepoInitHandshakeRequest {
+  .aiserver.v1.RepositoryInfo repository = 1;
+  string root_hash = 2;
+  string potential_legacy_repo_name = 3;
+}
+
+message FastRepoInitHandshakeResponse {
+  .aiserver.v1.FastRepoInitHandshakeResponse.Status status = 1;
+  string repo_name = 2;
+
+  enum Status {
+    STATUS_UNSPECIFIED = 0;
+    STATUS_UP_TO_DATE = 1;
+    STATUS_OUT_OF_SYNC = 2;
+    STATUS_FAILURE = 3;
+    STATUS_EMPTY = 4;
+  }
+}
+
+message FastRepoInitHandshakeV2Request {
+  .aiserver.v1.RepositoryInfo repository = 1;
+  string root_hash = 2;
+  .aiserver.v1.SimilarityMetricType similarity_metric_type = 3;
+  repeated float similarity_metric = 4;
+  string path_key_hash = 5;
+  .aiserver.v1.PathKeyHashType path_key_hash_type = 6;
+  bool do_copy = 7;
+  string path_key = 8;
+  .aiserver.v1.LocalCodebaseFileInfo local_codebase_root_info = 9;
+  bool return_after_background_copy_started = 10;
+}
+
+message FastRepoInitHandshakeV2Response {
+  .aiserver.v1.FastRepoInitHandshakeV2Response.Status status = 1;
+  repeated .aiserver.v1.RepositoryCodebaseInfo codebases = 2;
+
+  enum Status {
+    STATUS_UNSPECIFIED = 0;
+    STATUS_FAILURE = 1;
+    STATUS_SUCCESS = 2;
+  }
+}
+
+message FastRepoSyncCompleteRequest {
+  repeated .aiserver.v1.RepositoryCodebaseSyncStatus codebases = 1;
+}
+
+message FastRepoSyncCompleteResponse {
+}
+
+message FastUpdateFileRequest {
+  .aiserver.v1.RepositoryInfo repository = 1;
+  oneof partial_path {
+    .aiserver.v1.PartialPathItem directory = 2;
+    .aiserver.v1.FastUpdateFileRequest.LocalFile local_file = 3;
+  }
+  repeated .aiserver.v1.PartialPathItem ancestor_spline = 4;
+  .aiserver.v1.FastUpdateFileRequest.UpdateType update_type = 5;
+
+  message LocalFile {
+    .aiserver.v1.File file = 1;
+    string hash = 2;
+    string unencrypted_relative_workspace_path = 3;
+  }
+
+  enum UpdateType {
+    UPDATE_TYPE_UNSPECIFIED = 0;
+    UPDATE_TYPE_ADD = 1;
+    UPDATE_TYPE_DELETE = 2;
+    UPDATE_TYPE_MODIFY = 3;
+  }
+}
+
+message FastUpdateFileResponse {
+  .aiserver.v1.FastUpdateFileResponse.Status status = 1;
+
+  enum Status {
+    STATUS_UNSPECIFIED = 0;
+    STATUS_SUCCESS = 1;
+    STATUS_FAILURE = 2;
+    STATUS_EXPECTED_FAILURE = 3;
+  }
+}
+
+message FastUpdateFileV2Request {
+  .aiserver.v1.ClientRepositoryInfo client_repository_info = 1;
+  string codebase_id = 2;
+  oneof partial_path {
+    .aiserver.v1.PartialPathItem directory = 3;
+    .aiserver.v1.FastUpdateFileV2Request.LocalFile local_file = 4;
+  }
+  repeated .aiserver.v1.PartialPathItem ancestor_spline = 5;
+  .aiserver.v1.FastUpdateFileV2Request.UpdateType update_type = 6;
+  repeated .aiserver.v1.FastUpdateFileV2Request.FileUpdate file_updates = 7;
+
+  message FileUpdate {
+    oneof partial_path {
+      .aiserver.v1.PartialPathItem directory = 1;
+      .aiserver.v1.FastUpdateFileV2Request.LocalFile local_file = 2;
+    }
+    repeated .aiserver.v1.PartialPathItem ancestor_spline = 3;
+    .aiserver.v1.FastUpdateFileV2Request.UpdateType update_type = 4;
+  }
+
+  message LocalFile {
+    .aiserver.v1.File file = 1;
+    string hash = 2;
+    string unencrypted_relative_workspace_path = 3;
+  }
+
+  enum UpdateType {
+    UPDATE_TYPE_UNSPECIFIED = 0;
+    UPDATE_TYPE_ADD = 1;
+    UPDATE_TYPE_DELETE = 2;
+    UPDATE_TYPE_MODIFY = 3;
+    UPDATE_TYPE_BATCH = 4;
+  }
+}
+
+message FastUpdateFileV2Response {
+  .aiserver.v1.FastUpdateFileV2Response.Status status = 1;
+
+  enum Status {
+    STATUS_UNSPECIFIED = 0;
+    STATUS_SUCCESS = 1;
+    STATUS_FAILURE = 2;
+    STATUS_EXPECTED_FAILURE = 3;
+  }
+}
+
+message FileResult {
+  .aiserver.v1.File file = 1;
+  float score = 2;
+}
+
+message FinishUpdateRepoRequest {
+  .aiserver.v1.RepositoryInfo repository = 1;
+}
+
+message FinishUpdateRepoResponse {
+  .aiserver.v1.FinishUpdateRepoResponse.Status status = 1;
+
+  enum Status {
+    STATUS_UNSPECIFIED = 0;
+    STATUS_SUCCESS = 1;
+    STATUS_FAILURE = 2;
+  }
+}
+
+message FinishUploadRepoRequest {
+  .aiserver.v1.RepositoryInfo repository = 1;
+}
+
+message FinishUploadRepoResponse {
+  .aiserver.v1.FinishUploadRepoResponse.Status status = 1;
+
+  enum Status {
+    STATUS_UNSPECIFIED = 0;
+    STATUS_SUCCESS = 1;
+    STATUS_FAILURE = 2;
+  }
+}
+
+message GetAvailableChunkingStrategiesRequest {
+  .aiserver.v1.RepositoryInfo repository = 1;
+}
+
+message GetAvailableChunkingStrategiesResponse {
+  repeated .aiserver.v1.ChunkingStrategy chunking_strategies = 1;
+}
+
+message GetCopyStatusRequest {
+  string codebase_id = 1;
+  string copy_task_handle = 2;
+}
+
+message GetCopyStatusResponse {
+  .aiserver.v1.GetCopyStatusResponse.Phase phase = 1;
+  float percent_done = 2;
+  string error_message = 3;
+  optional .aiserver.v1.GetCopyStatusResponse.CompletedStatus completed_status = 4;
+
+  enum CompletedStatus {
+    COMPLETED_STATUS_UNSPECIFIED = 0;
+    COMPLETED_STATUS_UP_TO_DATE = 1;
+    COMPLETED_STATUS_OUT_OF_SYNC = 2;
+    COMPLETED_STATUS_FAILURE = 3;
+  }
+
+  enum Phase {
+    PHASE_UNSPECIFIED = 0;
+    PHASE_INITIALIZING = 1;
+    PHASE_COPYING = 2;
+    PHASE_COMPLETED = 3;
+    PHASE_CREATING_SEARCH_FILTERS = 4;
+    PHASE_COPYING_SEARCH_STATE = 5;
+    PHASE_COPYING_TREE_STATE = 6;
+    PHASE_SYNCING_COPY = 7;
+  }
+}
+
+message GetEmbeddingsRequest {
+  repeated string texts = 1;
+}
+
+message GetEmbeddingsResponse {
+  repeated .aiserver.v1.GetEmbeddingsResponse.Embedding embeddings = 2;
+
+  message Embedding {
+    repeated float embedding = 1;
+  }
+}
+
+message GetHighLevelFolderDescriptionRequest {
+  repeated .aiserver.v1.GetHighLevelFolderDescriptionRequest.Readme readmes = 1;
+  repeated string top_level_relative_workspace_paths = 2;
+  string workspace_root_path = 4;
+
+  message Readme {
+    string relative_workspace_path = 1;
+    string contents = 2;
+  }
+}
+
+message GetHighLevelFolderDescriptionResponse {
+  string description = 1;
+}
+
+message GetLineNumberClassificationsRequest {
+  string query = 1;
+  repeated .aiserver.v1.CodeResult code_results = 2;
+}
+
+message GetLineNumberClassificationsResponse {
+  .aiserver.v1.CodeResultWithClassificationInfo classified_result = 1;
+}
+
+message GetNumFilesToSendRequest {
+  .aiserver.v1.RepositoryInfo repository = 1;
+}
+
+message GetNumFilesToSendResponse {
+  int32 num_files = 1;
+}
+
+message GetPRIndexingStatusRequest {
+  .aiserver.v1.RepositoryInfo repository = 1;
+}
+
+message GetPRIndexingStatusResponse {
+  .aiserver.v1.GetPRIndexingStatusResponse.Status status = 1;
+  float sync_percentage = 2;
+  optional string last_indexed_commit = 3;
+  optional uint32 last_indexed_generation = 4;
+  optional uint32 total_commits = 5;
+  optional float indexing_rate = 6;
+  optional int64 last_updated_timestamp = 7;
+  optional uint32 index_version = 8;
+
+  enum Status {
+    STATUS_UNSPECIFIED = 0;
+    STATUS_EMPTY = 1;
+    STATUS_SYNCING = 2;
+    STATUS_SYNCED = 3;
+    STATUS_PARTIAL = 4;
+  }
+}
+
+message GetUploadLimitsRequest {
+  optional .aiserver.v1.RepositoryInfo repository = 1;
+}
+
+message GetUploadLimitsResponse {
+  int32 soft_limit = 1;
+  int32 hard_limit = 2;
+}
+
+message IndexedFile {
+  string path = 1;
+  repeated string diff = 2;
+}
+
+message IndexedPullRequest {
+  uint32 pr_number = 1;
+  string sha = 2;
+  string message = 3;
+  repeated .aiserver.v1.IndexedFile changed_files = 4;
+  uint32 generation = 5;
+  string commit_secret = 6;
+  int64 unix_timestamp = 7;
+  optional string title = 8;
+  optional string author = 9;
+}
+
+message IsLoggedInRequest {
+}
+
+message IsLoggedInResponse {
+  bool logged_in = 1;
+}
+
+message LocalCodebaseFileInfo {
+}
+
+message LoginRequest {
+}
+
+message LoginResponse {
+  string login_url = 1;
+}
+
+message LogoutRequest {
+}
+
+message LogoutResponse {
+  .aiserver.v1.LogoutResponse.Status status = 1;
+
+  enum Status {
+    STATUS_UNSPECIFIED = 0;
+    STATUS_SUCCESS = 1;
+    STATUS_FAILURE = 2;
+    STATUS_NOT_LOGGED_IN = 3;
+  }
+}
+
+message NodeResult {
+  .aiserver.v1.IndexFileData.NodeData node = 1;
+  .aiserver.v1.File file = 2;
+  float score = 3;
+}
+
+message PRDiffChunkPointer {
+  string file_path = 1;
+  int32 start_line_number_zero_indexed = 2;
+  int32 end_line_number_zero_indexed_exclusive = 3;
+}
+
+message PartialPathItem {
+  string relative_workspace_path = 1;
+  string hash_of_node = 2;
+}
+
+enum PathKeyHashType {
+  PATH_KEY_HASH_TYPE_UNSPECIFIED = 0;
+  PATH_KEY_HASH_TYPE_SHA256 = 1;
+}
+
+message PollLoginRequest {
+}
+
+message PollLoginResponse {
+  .aiserver.v1.PollLoginResponse.Status status = 1;
+
+  enum Status {
+    STATUS_UNSPECIFIED = 0;
+    STATUS_LOGGED_IN = 1;
+    STATUS_FAILURE = 2;
+    STATUS_CHECKING = 3;
+  }
+}
+
+message QueryOnlyRepoAccess {
+  string owner_auth_id = 1;
+  string access_token = 2;
+  string user_repo_owner = 3;
+  string user_repo_name = 4;
+}
+
+message QueryOnlyRepositoryInfo {
+  .aiserver.v1.RepositoryInfo repository = 1;
+  .aiserver.v1.QueryOnlyRepoAccess query_only_repo_access = 2;
+}
+
+enum RechunkerChoice {
+  RECHUNKER_CHOICE_UNSPECIFIED = 0;
+  RECHUNKER_CHOICE_IDENTITY = 1;
+  RECHUNKER_CHOICE_600_TOKS = 2;
+  RECHUNKER_CHOICE_2400_TOKS = 3;
+  RECHUNKER_CHOICE_4000_TOKS = 4;
+}
+
+message ReflectionResult {
+  .aiserver.v1.ReflectionData reflection = 1;
+  float score = 2;
+}
+
+message RemoveRepoHistoryRequest {
+  .aiserver.v1.RepositoryInfo repository = 1;
+}
+
+message RemoveRepoHistoryResponse {
+  .aiserver.v1.RemoveRepoHistoryResponse.Status status = 1;
+
+  enum Status {
+    STATUS_UNSPECIFIED = 0;
+    STATUS_NOT_FOUND = 1;
+    STATUS_NOT_AUTHORIZED = 2;
+    STATUS_PARTIAL_SUCCESS = 3;
+    STATUS_SUCCESS = 4;
+  }
+}
+
+message RemoveRepositoryRequest {
+}
+
+message RemoveRepositoryResponse {
+  .aiserver.v1.RemoveRepositoryResponse.Status status = 1;
+
+  enum Status {
+    STATUS_UNSPECIFIED = 0;
+    STATUS_NOT_FOUND = 1;
+    STATUS_NOT_AUTHORIZED = 2;
+    STATUS_STARTED = 3;
+    STATUS_SUCCESS = 4;
+  }
+}
+
+message RepoHistoryInfo {
+  string history_id = 1;
+  optional string branch_name = 2;
+  optional string last_indexed_commit = 3;
+  optional uint32 last_indexed_commit_generation = 4;
+  optional bytes sync_bitmap = 5;
+}
+
+message RepoHistoryInitHandshakeRequest {
+  .aiserver.v1.RepositoryInfo repository = 1;
+  string origin = 2;
+  optional string test_origin_commit = 3;
+  optional string test_origin_commit_secret = 4;
+  optional bool send_copy_candidates = 5;
+}
+
+message RepoHistoryInitHandshakeResponse {
+  .aiserver.v1.RepoHistoryInitHandshakeResponse.Status status = 1;
+  repeated .aiserver.v1.RepoHistoryInfo histories = 2;
+  optional string copy_candidate_nonce = 3;
+  repeated string copy_candidates = 4;
+  optional string error_message = 5;
+
+  enum Status {
+    STATUS_UNSPECIFIED = 0;
+    STATUS_FAILURE = 1;
+    STATUS_SUCCESS = 2;
+    STATUS_TEST_CANDIDATES = 3;
+    STATUS_NO_INDEXING = 4;
+  }
+}
+
+message RepoHistorySyncCompleteRequest {
+  repeated .aiserver.v1.RepoHistorySyncCompleteRequest.SyncedHistory synced_histories = 1;
+
+  enum Status {
+    STATUS_UNSPECIFIED = 0;
+    STATUS_SUCCESS = 1;
+    STATUS_FAILURE = 2;
+    STATUS_TOTAL_FAILURE = 3;
+    STATUS_INTERRUPTED = 4;
+  }
+
+  message SyncedHistory {
+  }
+}
+
+message RepoHistorySyncCompleteResponse {
+}
+
+message RepoHistorySyncOneRequest {
+  string history_id = 1;
+  repeated .aiserver.v1.IndexedPullRequest pull_requests = 2;
+  repeated uint32 ignore_commits = 3;
+}
+
+message RepoHistorySyncOneResponse {
+  .aiserver.v1.RepoHistorySyncOneResponse.Status status = 1;
+
+  enum Status {
+    STATUS_UNSPECIFIED = 0;
+    STATUS_SUCCESS = 1;
+    STATUS_FAILURE = 2;
+    STATUS_PARTIAL_SUCCESS = 3;
+    STATUS_NOT_INDEXING = 4;
+  }
+}
+
+message RepositoriesRequest {
+}
+
+message RepositoriesResponse {
+  repeated .aiserver.v1.RepositoryInfo repositories = 1;
+}
+
+message RepositoryCodebaseInfo {
+  string codebase_id = 1;
+  .aiserver.v1.RepositoryCodebaseInfo.Status status = 2;
+  .aiserver.v1.QueryOnlyRepositoryInfo query_only_similar_repo = 3;
+  string copy_task_handle = 4;
+
+  enum Status {
+    STATUS_UNSPECIFIED = 0;
+    STATUS_UP_TO_DATE = 1;
+    STATUS_OUT_OF_SYNC = 2;
+    STATUS_EMPTY = 3;
+    STATUS_EMPTY_WITH_COPY_AVAILABLE = 4;
+    STATUS_COPY_IN_PROGRESS = 5;
+  }
+}
+
+message RepositoryCodebaseSyncStatus {
+  string codebase_id = 1;
+  .aiserver.v1.RepositoryCodebaseSyncStatus.Status status = 2;
+  .aiserver.v1.SimilarityMetricType similarity_metric_type = 3;
+  repeated float similarity_metric = 4;
+  string path_key_hash = 5;
+  .aiserver.v1.PathKeyHashType path_key_hash_type = 6;
+  int32 failed_upload_count = 7;
+  int32 failed_delete_count = 8;
+  int32 total_upload_count = 9;
+  int32 total_delete_count = 10;
+  int32 failed_subtree_count = 11;
+  int32 total_subtree_count = 12;
+  bool hit_iteration_limit = 13;
+
+  enum Status {
+    STATUS_UNSPECIFIED = 0;
+    STATUS_SUCCESS = 1;
+    STATUS_FAILURE = 2;
+  }
+}
+
+message RepositoryInfo {
+  string relative_workspace_path = 1;
+  repeated string remote_urls = 2;
+  repeated string remote_names = 3;
+  string repo_name = 4;
+  string repo_owner = 5;
+  bool is_tracked = 6;
+  bool is_local = 7;
+  optional int32 num_files = 8;
+  optional double orthogonal_transform_seed = 9;
+  optional .aiserver.v1.EmbeddingModel preferred_embedding_model = 10;
+  string workspace_uri = 11;
+  optional .aiserver.v1.DatabaseProvider preferred_db_provider = 12;
+}
+
+message RepositoryStatusRequest {
+  .aiserver.v1.RepositoryInfo repository = 1;
+}
+
+message RepositoryStatusResponse {
+  oneof status {
+    .aiserver.v1.RepositoryStatusResponse.NotFound not_found = 1;
+    .aiserver.v1.RepositoryStatusResponse.Uploading uploading = 2;
+    .aiserver.v1.RepositoryStatusResponse.Syncing syncing = 3;
+    .aiserver.v1.RepositoryStatusResponse.Synced synced = 4;
+    .aiserver.v1.RepositoryStatusResponse.NotSubscribed not_subscribed = 5;
+    .aiserver.v1.RepositoryStatusResponse.TooBig too_big = 6;
+    .aiserver.v1.RepositoryStatusResponse.AuthTokenNotFound auth_token_not_found = 7;
+    .aiserver.v1.RepositoryStatusResponse.AuthTokenNotAuthorized auth_token_not_authorized = 8;
+    .aiserver.v1.RepositoryStatusResponse.EmptyMessage error_uploading = 10;
+    .aiserver.v1.RepositoryStatusResponse.EmptyMessage error_syncing = 11;
+  }
+  optional bool is_owner = 9;
+
+  message AuthTokenNotAuthorized {
+  }
+
+  message AuthTokenNotFound {
+  }
+
+  message EmptyMessage {
+  }
+
+  message NotFound {
+  }
+
+  message NotSubscribed {
+  }
+
+  message Synced {
+    string branch = 1;
+    string commit = 2;
+  }
+
+  message Syncing {
+    string branch = 1;
+    string old_commit = 2;
+    string new_commit = 3;
+    float progress = 4;
+  }
+
+  message TooBig {
+    int32 max_size = 1;
+  }
+
+  message Uploading {
+    float progress = 1;
+  }
+}
+
+enum RerankerAlgorithm {
+  RERANKER_ALGORITHM_UNSPECIFIED = 0;
+  RERANKER_ALGORITHM_LULEA = 1;
+  RERANKER_ALGORITHM_UMEA = 2;
+  RERANKER_ALGORITHM_NONE = 3;
+  RERANKER_ALGORITHM_LLAMA = 4;
+  RERANKER_ALGORITHM_STARCODER_V1 = 5;
+  RERANKER_ALGORITHM_GPT_3_5_LOGPROBS = 6;
+  RERANKER_ALGORITHM_LULEA_HAIKU = 7;
+  RERANKER_ALGORITHM_COHERE = 8;
+  RERANKER_ALGORITHM_VOYAGE = 9;
+  RERANKER_ALGORITHM_VOYAGE_EMBEDS = 10;
+  RERANKER_ALGORITHM_IDENTITY = 11;
+  RERANKER_ALGORITHM_ADA_EMBEDS = 12;
+}
+
+message SearchPRHistoryRequest {
+  .aiserver.v1.RepositoryInfo repository = 1;
+  string query = 2;
+  int32 top_k = 3;
+}
+
+message SearchPRHistoryResponse {
+  repeated .aiserver.v1.SearchPRHistoryResponse.PRSearchResult results = 1;
+  optional uint32 git_height = 2;
+
+  message PRSearchResult {
+    string commit_hash = 1;
+    float score = 2;
+    repeated .aiserver.v1.PRDiffChunkPointer diff_chunks = 3;
+    optional string title = 4;
+    optional string summary = 5;
+    optional uint32 pr_number = 6;
+    optional string author = 7;
+    optional string date = 8;
+    repeated string changed_files = 9;
+  }
+}
+
+message SearchRepositoryDeepContextRequest {
+  string query = 1;
+  int32 top_k = 2;
+  int32 top_reflections_k = 3;
+  repeated string index_ids = 4;
+  bool use_model_on_files = 5;
+  bool use_reflections = 6;
+}
+
+message SearchRepositoryDeepContextResponse {
+  repeated .aiserver.v1.NodeResult top_nodes = 1;
+  repeated .aiserver.v1.ReflectionResult reflections = 2;
+  string index_id = 3;
+}
+
+message SearchRepositoryRequest {
+  string query = 1;
+  .aiserver.v1.RepositoryInfo repository = 2;
+  int32 top_k = 3;
+  .aiserver.v1.ModelDetails model_details = 4;
+  bool rerank = 5;
+  optional bool context_cache_request = 6;
+  optional string glob_filter = 7;
+  optional string not_glob_filter = 8;
+  optional int32 race_n_requests = 9;
+  .aiserver.v1.QueryOnlyRepoAccess query_only_repo_access = 10;
+}
+
+message SearchRepositoryResponse {
+  repeated .aiserver.v1.CodeResult code_results = 1;
+}
+
+message SemSearchRequest {
+  .aiserver.v1.SearchRepositoryRequest request = 1;
+}
+
+message SemSearchResponse {
+  .aiserver.v1.SearchRepositoryResponse response = 1;
+  optional .aiserver.v1.SemSearchResponse.SemSearchMetadata metadata = 2;
+  repeated .aiserver.v1.CodeResultWithClassificationInfo code_results = 3;
+
+  message SemSearchMetadata {
+    optional string query_embedding_model = 1;
+    optional int32 server_side_latency_ms = 2;
+    optional int32 embed_latency_ms = 3;
+    optional int32 knn_latency_ms = 4;
+  }
+}
+
+enum SimilarityMetricType {
+  SIMILARITY_METRIC_TYPE_UNSPECIFIED = 0;
+  SIMILARITY_METRIC_TYPE_SIMHASH = 1;
+}
+
+message StartUpdateRepoRequest {
+  .aiserver.v1.RepositoryInfo repository = 1;
+}
+
+message StartUpdateRepoResponse {
+  .aiserver.v1.StartUpdateRepoResponse.Status status = 1;
+
+  enum Status {
+    STATUS_UNSPECIFIED = 0;
+    STATUS_SUCCESS = 1;
+    STATUS_FAILURE = 2;
+    STATUS_NOT_FOUND = 3;
+    STATUS_ALREADY_SYNCING = 4;
+  }
+}
+
+message StartUploadRepoRequest {
+  .aiserver.v1.RepositoryInfo repository = 1;
+}
+
+message StartUploadRepoResponse {
+  .aiserver.v1.StartUploadRepoResponse.Status status = 1;
+  repeated string seen_files = 2;
+
+  enum Status {
+    STATUS_UNSPECIFIED = 0;
+    STATUS_SUCCESS = 1;
+    STATUS_FAILURE = 2;
+    STATUS_ALREADY_EXISTS = 3;
+  }
+}
+
+message SubscribeRepositoryRequest {
+  .aiserver.v1.RepositoryInfo repository = 1;
+}
+
+message SubscribeRepositoryResponse {
+  .aiserver.v1.SubscribeRepositoryResponse.Status status = 1;
+
+  enum Status {
+    STATUS_UNSPECIFIED = 0;
+    STATUS_NOT_FOUND = 1;
+    STATUS_NOT_AUTHORIZED = 2;
+    STATUS_ALREADY_SUBSCRIBED = 3;
+    STATUS_SUCCESS = 4;
+  }
+}
+
+message SyncMerkleSubtreeRequest {
+  .aiserver.v1.RepositoryInfo repository = 1;
+  .aiserver.v1.PartialPathItem local_partial_path = 2;
+}
+
+message SyncMerkleSubtreeResponse {
+  oneof result {
+    bool match = 1;
+    .aiserver.v1.SyncMerkleSubtreeResponse.Mismatch mismatch = 2;
+  }
+
+  message Mismatch {
+    repeated .aiserver.v1.PartialPathItem children = 1;
+  }
+}
+
+message SyncMerkleSubtreeV2Request {
+  .aiserver.v1.ClientRepositoryInfo client_repository_info = 1;
+  string codebase_id = 2;
+  .aiserver.v1.PartialPathItem local_partial_path = 3;
+  repeated .aiserver.v1.PartialPathItem local_partial_paths = 4;
+}
+
+message SyncMerkleSubtreeV2Response {
+  oneof result {
+    bool match = 1;
+    .aiserver.v1.SyncMerkleSubtreeV2Response.Mismatch mismatch = 2;
+  }
+  repeated .aiserver.v1.SyncMerkleSubtreeV2Response.PartialPathResult results = 3;
+
+  message Mismatch {
+    repeated .aiserver.v1.PartialPathItem children = 1;
+  }
+
+  message PartialPathResult {
+    oneof result {
+      bool match = 1;
+      .aiserver.v1.SyncMerkleSubtreeV2Response.Mismatch mismatch = 2;
+      bool response_size_limit_exceeded = 3;
+    }
+  }
+}
+
+message SyncRepositoryRequest {
+  int32 codebase_id = 1;
+}
+
+message SyncRepositoryResponse {
+}
+
+message UnsubscribeRepositoryRequest {
+  .aiserver.v1.RepositoryInfo repository = 1;
+}
+
+message UnsubscribeRepositoryResponse {
+  .aiserver.v1.UnsubscribeRepositoryResponse.Status status = 1;
+
+  enum Status {
+    STATUS_UNSPECIFIED = 0;
+    STATUS_NOT_FOUND = 1;
+    STATUS_NOT_SUBSCRIBED = 2;
+    STATUS_SUCCESS = 3;
+  }
+}
+
+message UpdateFileRequest {
+  .aiserver.v1.RepositoryInfo repository = 1;
+  .aiserver.v1.File added_file = 2;
+  optional string deleted_file_path = 3;
+  string commit_sha = 4;
+  string queue_id = 5;
+}
+
+message UpdateFileResponse {
+  .aiserver.v1.UpdateFileResponse.Status status = 1;
+
+  enum Status {
+    STATUS_UNSPECIFIED = 0;
+    STATUS_SUCCESS = 1;
+    STATUS_FAILURE = 2;
+    STATUS_EXPECTED_FAILURE = 3;
+    STATUS_QUEUE_BACKED_UP = 4;
+  }
+}
+
+message UpgradeScopeRequest {
+  repeated string scopes = 2;
+}
+
+message UpgradeScopeResponse {
+  .aiserver.v1.UpgradeScopeResponse.Status status = 1;
+
+  enum Status {
+    STATUS_UNSPECIFIED = 0;
+    STATUS_SUCCESS = 1;
+    STATUS_FAILURE = 2;
+  }
+}
+
+message UploadFileRequest {
+  .aiserver.v1.RepositoryInfo repository = 1;
+  .aiserver.v1.File file = 2;
+  string commit_sha = 3;
+  string queue_id = 4;
+}
+
+message UploadFileResponse {
+  .aiserver.v1.UploadFileResponse.Status status = 1;
+
+  enum Status {
+    STATUS_UNSPECIFIED = 0;
+    STATUS_SUCCESS = 1;
+    STATUS_FAILURE = 2;
+    STATUS_EXPECTED_FAILURE = 3;
+    STATUS_QUEUE_BACKED_UP = 4;
+  }
+}
+
+message UploadRepositoryRequest {
+  .aiserver.v1.RepositoryInfo repository = 1;
+}
+
+message UploadRepositoryResponse {
+  .aiserver.v1.UploadRepositoryResponse.Status status = 1;
+
+  enum Status {
+    STATUS_UNSPECIFIED = 0;
+    STATUS_SUCCESS = 1;
+    STATUS_FAILURE = 2;
+    STATUS_AUTH_TOKEN_BAD_PERMISSIONS = 3;
+    STATUS_ALREADY_EXISTS = 4;
+  }
+}

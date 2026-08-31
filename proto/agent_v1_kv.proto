@@ -1,0 +1,45 @@
+syntax = "proto3";
+
+package agent.v1;
+
+import "agent_v1_exec.proto";
+
+
+message Error {
+  string message = 1;
+}
+
+message GetBlobArgs {
+  bytes blob_id = 1;
+}
+
+message GetBlobResult {
+  optional bytes blob_data = 1;
+  optional .agent.v1.Error error = 2;
+}
+
+message KvClientMessage {
+  uint32 id = 1;
+  oneof message {
+    .agent.v1.GetBlobResult get_blob_result = 2;
+    .agent.v1.SetBlobResult set_blob_result = 3;
+  }
+}
+
+message KvServerMessage {
+  uint32 id = 1;
+  oneof message {
+    .agent.v1.GetBlobArgs get_blob_args = 2;
+    .agent.v1.SetBlobArgs set_blob_args = 3;
+  }
+  optional .agent.v1.SpanContext span_context = 4;
+}
+
+message SetBlobArgs {
+  bytes blob_id = 1;
+  bytes blob_data = 2;
+}
+
+message SetBlobResult {
+  optional .agent.v1.Error error = 1;
+}
