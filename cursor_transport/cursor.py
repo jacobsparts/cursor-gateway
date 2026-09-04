@@ -78,8 +78,12 @@ _CURSOR_SESSION_MAX_BRANCHES = 32
 _CURSOR_ENVELOPE_BUSY: set[tuple[str, str]] = set()
 
 KEY_EXCHANGE_URL = "https://api2.cursor.sh/auth/exchange_user_api_key"
-AUTH_CACHE_PATH = os.path.expanduser("~/.code-agent/cursor-auth.json")
-AUTH_LOCK_PATH = os.path.expanduser("~/.code-agent/cursor-auth.lock")
+AUTH_CACHE_PATH = os.path.expanduser(
+    os.environ.get("CURSOR_AUTH_CACHE_PATH") or "~/.cursor/auth-cache.json"
+)
+AUTH_LOCK_PATH = os.path.expanduser(
+    os.environ.get("CURSOR_AUTH_LOCK_PATH") or "~/.cursor/auth-cache.lock"
+)
 ACCESS_TOKEN_LIFETIME = 60 * 60
 ACCESS_TOKEN_REFRESH_MARGIN = 5 * 60
 AGENT_RUNSSE_PATH = "agent.v1.AgentService/RunSSE"
