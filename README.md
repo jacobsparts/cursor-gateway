@@ -1,6 +1,6 @@
 # cursor-gateway
 
-A minimal, dependency-light gateway that exposes Cursor's agent backend as an
+A pure-Python, dependency-light gateway that exposes Cursor's agent backend as an
 OpenAI-compatible Chat Completions API. It implements a synthetic Cursor
 client that speaks Cursor's protobuf protocol directly (real inference via
 `resumeAction` over client-built synthetic checkpoints), so any plain HTTP
@@ -50,7 +50,8 @@ Requests without a valid `Authorization: Bearer <key>` header get `401`.
 |---|---|---|
 | GET | `/health`, `/healthz` | Liveness probe |
 | GET | `/v1/models` | Available models (same Bearer key as chat) |
-| POST | `/v1/chat/completions` | Chat completion (non-streaming) |
+| POST | `/v1/chat/completions` | Chat completion (non-streaming, raw native tools) |
+| POST | `/v1/code-agent/chat/completions` | Chat completion with Code Agent native-tool rewriting |
 
 ## Models
 
@@ -182,6 +183,67 @@ Notes:
 - The `pi_*` family and several `_precheck` / internal tools are part of
   Cursor's internal plumbing; declaring them is rarely useful.
 
+## Code Agent Integration
+
+`cursor-gateway` includes a dedicated endpoint for [Code Agent](https://github.com/jacobsparts/code-agent):
+
+```
+POST /v1/code-agent/chat/completions
+```
+
+### How it works
+
+Cursor backend models are trained to invoke native client tools (`read`, `grep`, `shell_stream`, `exec_server_message`) rather than outputting plain text or standard function calls. When called via the standard `/v1/chat/completions` endpoint, those surface as `native_<tool>` calls.
+
+The `/v1/code-agent/chat/completions` endpoint bridges this:
+1. Declares Cursor native tools on incoming requests so models can utilize their native capabilities.
+2. Intercepts native tool calls in responses and translates them into Code Agent's Python REPL convention:
+   - `read` → `view("path")` or `print(read("path")[offset:limit])`
+   - `grep` → `grep(pattern=..., path=...)`
+   - `shell_stream` → `bash(command=..., timeout=..., bg=...)`
+   - `exec_server_message` → `think("...")`
+3. Packages the resulting code into a standard `repl_execute` function call that Code Agent executes directly in its REPL.
+
+### Code Agent Configuration
+
+Add the provider and desired models to `~/.code-agent/config.py`:
+
+```python
+register_provider(
+    "cursor",
+    host="127.0.0.1",
+    port=8931,
+    path="/v1/code-agent/chat/completions",
+    api_key="crsr_...",
+    rpm=60,
+    concurrency=5,
+    timeout=1800,
+    tools=True,
+    api_type="completions",
+)
+
+register_model(
+    "cursor", "composer-2.5",
+    model="composer-2.5",
+    tool_mode="repl_execute",
+    context_window=200_000,
+)
+
+register_model(
+    "cursor", "grok-4.6",
+    model="cursor-grok-4.6-high",
+    tool_mode="repl_execute",
+    context_window=256_000,
+)
+
+register_model(
+    "cursor", "kimi-k3",
+    model="kimi-k3-high",
+    tool_mode="repl_execute",
+    context_window=200_000,
+)
+```
+
 ## Configuration
 
 | Variable | Default | Meaning |
@@ -241,3 +303,12 @@ journalctl -u cursor-gateway -f
   synthetic checkpoints).
 - `usage` values are the backend-reported token counts (from the run stream
   or the usage-events fallback); no client-side estimation is performed.
+
+## Related Projects
+
+Part of a family of developer tools for agentic coding and model gateways:
+
+- **[Code Agent](https://github.com/jacobsparts/code-agent)** — A Python REPL-native coding agent designed around lean context, persistent execution state, and infinite context via lossless turn coalescing.
+- **[AgentLib](https://github.com/jacobsparts/agentlib)** — A lightweight, production-proven library for building and shipping LLM agents quickly, where composable agents are defined as Python classes—making it both simple and powerful.
+- **[codex-gateway](https://github.com/jacobsparts/codex-gateway)** — Pure-Python OpenAI Responses API-compatible gateway for Codex/ChatGPT OAuth accounts with quota management, account rotation, and automated resets.
+- **[cursor-gateway](https://github.com/jacobsparts/cursor-gateway)** — Pure-Python OpenAI-compatible Chat Completions gateway that wraps the Cursor Agent API with synthetic checkpoints to provide real native tool calling and cache-friendly session routing.
